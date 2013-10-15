@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 2012 for Windows Desktop
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sensor1", "Sensor1\Sensor1.csproj", "{03B19596-3C05-4FFE-B9B4-982D7272A5F5}"
+EndProject
+Project("{911E67C6-3D85-4FCE-B560-20A9C3E3FF48}") = "KinectExplorer", "..\..\..\..\..\..\Program Files\Microsoft SDKs\Kinect\Developer Toolkit v1.5.2\Samples\bin\KinectExplorer.exe", "{8CC144BB-B333-4F86-9977-F4E1A664AC47}"
+	ProjectSection(DebuggerProjectSystem) = preProject
+		PortSupplier = 00000000-0000-0000-0000-000000000000
+		Executable = C:\Program Files\Microsoft SDKs\Kinect\Developer Toolkit v1.5.2\Samples\bin\KinectExplorer.exe
+		RemoteMachine = IMAX-W7
+		StartingDirectory = C:\Program Files\Microsoft SDKs\Kinect\Developer Toolkit v1.5.2\Samples\bin
+		Environment = Default
+		LaunchingEngine = 00000000-0000-0000-0000-000000000000
+		LaunchSQLEngine = No
+		AttachLaunchAction = No
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Kinect.Toolkit", "..\..\..\..\..\..\Program Files\Microsoft SDKs\Kinect\Developer Toolkit v1.5.2\Samples\C#\Microsoft.Kinect.Toolkit\Microsoft.Kinect.Toolkit.csproj", "{C6F9C31B-6130-4443-A5CC-EF0664552ECD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.Samples.Kinect.WpfViewers", "..\..\..\..\Downloads\KinectforWindowsSDKV1\KinectforWindowsSDKV1\Dependencies\KinectWpfViewers\Microsoft.Samples.Kinect.WpfViewers.csproj", "{4DE23893-27E7-423F-9BB6-BA21DAC2C45E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{03B19596-3C05-4FFE-B9B4-982D7272A5F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03B19596-3C05-4FFE-B9B4-982D7272A5F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03B19596-3C05-4FFE-B9B4-982D7272A5F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03B19596-3C05-4FFE-B9B4-982D7272A5F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CC144BB-B333-4F86-9977-F4E1A664AC47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CC144BB-B333-4F86-9977-F4E1A664AC47}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6F9C31B-6130-4443-A5CC-EF0664552ECD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6F9C31B-6130-4443-A5CC-EF0664552ECD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6F9C31B-6130-4443-A5CC-EF0664552ECD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6F9C31B-6130-4443-A5CC-EF0664552ECD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4DE23893-27E7-423F-9BB6-BA21DAC2C45E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DE23893-27E7-423F-9BB6-BA21DAC2C45E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4DE23893-27E7-423F-9BB6-BA21DAC2C45E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4DE23893-27E7-423F-9BB6-BA21DAC2C45E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
