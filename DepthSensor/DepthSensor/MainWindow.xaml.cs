@@ -33,7 +33,19 @@ namespace DepthSensor
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            stopKinect(kinectSensorChooser.Kinect);
+        }
 
+        private void stopKinect(KinectSensor sensor)
+        {
+            if (sensor != null)
+            {
+                sensor.Stop();
+                if (sensor.AudioSource != null)
+                {
+                    sensor.AudioSource.Stop();
+                }
+            }
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

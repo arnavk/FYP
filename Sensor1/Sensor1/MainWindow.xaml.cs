@@ -204,8 +204,6 @@ namespace SkeletalTracking
                     {
                         sensor.AudioSource.Stop();
                     }
-
-
                 }
             }
         }
