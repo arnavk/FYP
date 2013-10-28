@@ -31,11 +31,15 @@ namespace SkeletalTracking
         bool closing = false;
         const int skeletonCount = 6;
         Skeleton[] allSkeletons = new Skeleton[skeletonCount];
-        
+        double left = 0;
+        double top = 0;
+        double width;
+        double height;
         public MainWindow()
         {
             InitializeComponent();
-            
+            width = MainCanvas.ActualWidth;
+            height = MainCanvas.ActualHeight;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -113,7 +117,7 @@ namespace SkeletalTracking
 
 
             //set scaled position
-            //ScalePosition(headImage, first.Joints[JointType.Head]);
+            ScalePosition(headImage, first.Joints[JointType.Head]);
             ScalePosition(leftEllipse, first.Joints[JointType.HandLeft]);
             ScalePosition(rightEllipse, first.Joints[JointType.HandRight]);
 
@@ -212,8 +216,20 @@ namespace SkeletalTracking
         {
             //Divide by 2 for width and height so point is right in the middle 
             // instead of in top/left corner
-            Canvas.SetLeft(element, point.X - element.Width / 2);
+
+            double newLeft = MainCanvas.ActualWidth - point.X;
+            
+            Canvas.SetLeft(element, newLeft - element.Width / 2);
             Canvas.SetTop(element, point.Y - element.Height / 2);
+
+            if (newLeft < left || newLeft > left + width)// || scaledJoint.Position.Y < top || scaledJoint.Position.Y > top + height)
+            {
+                //element.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                element.Visibility = Visibility.Visible;
+            }
 
         }
 
@@ -223,11 +239,10 @@ namespace SkeletalTracking
             //Joint scaledJoint = joint.ScaleTo(1280, 720); 
 
             //convert & scale (.3 = means 1/3 of joint distance)
-            Joint scaledJoint = joint.ScaleTo(1280, 720, .3f, .3f);
-
+            //Joint scaledJoint = joint.ScaleTo(1280, 720, .3f, .3f);
+            Joint scaledJoint = joint.ScaleTo((int)MainCanvas.ActualWidth, (int)MainCanvas.ActualHeight);
             Canvas.SetLeft(element, scaledJoint.Position.X);
             Canvas.SetTop(element, scaledJoint.Position.Y);
-
         }
 
 
@@ -239,8 +254,6 @@ namespace SkeletalTracking
 
         private void changeColor(Color s)
         {
-            
-
             if (this.Dispatcher.Thread != System.Threading.Thread.CurrentThread)
             {
                 this.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
@@ -253,6 +266,21 @@ namespace SkeletalTracking
                         }
                         ));
             }
+        }
+
+        private void AdjustColorViewer(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            left = HorizontalStartSlider.Value * 0.01 * MainCanvas.ActualWidth;
+            width = (HorizontalEndSlider.Value - HorizontalStartSlider.Value) * 0.01 * MainCanvas.ActualWidth;
+            Canvas.SetLeft(positioningRectangle, left);
+            positioningRectangle.Width = width;
+
+            if (VerticalStartSlider == null || VerticalEndSlider == null)
+                return;
+            //top = VerticalStartSlider.Value * 0.01 * MainCanvas.ActualHeight;
+            //height = (VerticalStartSlider.Value - VerticalStartSlider.Value) * 0.01 * MainCanvas.ActualHeight;
+            //Canvas.SetTop(positioningRectangle, height);
+            //positioningRectangle.Height = height;
         }
     }
 }
