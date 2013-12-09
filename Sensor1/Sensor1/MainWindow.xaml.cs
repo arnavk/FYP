@@ -31,10 +31,10 @@ namespace SkeletalTracking
         bool closing = false;
         const int skeletonCount = 6;
         Skeleton[] allSkeletons = new Skeleton[skeletonCount];
-        double left = 0;
-        double top = 0;
-        double width;
-        double height;
+        double left = 0;//left of the rectangle
+        double top = 0;//top of the rectangle
+        double width;//width of the rectangle
+        double height;//height of the rectangle
         public MainWindow()
         {
             InitializeComponent();
@@ -44,8 +44,8 @@ namespace SkeletalTracking
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            TCPServer = new Server();
-            TCPServer.ServerEvent += TCPServer_ServerEvent;
+            //TCPServer = new Server();
+            //TCPServer.ServerEvent += TCPServer_ServerEvent;
 
             kinectSensorChooser1.KinectSensorChanged += new DependencyPropertyChangedEventHandler(kinectSensorChooser1_KinectSensorChanged);
         }
@@ -64,12 +64,12 @@ namespace SkeletalTracking
             StopKinect(old);
 
             KinectSensor sensor = (KinectSensor)e.NewValue;
-
+            
             if (sensor == null)
             {
                 return;
             }
-
+            
 
 
 
@@ -92,6 +92,7 @@ namespace SkeletalTracking
             try
             {
                 sensor.Start();
+                sensor.ElevationAngle = 5;
             }
             catch (System.IO.IOException)
             {
@@ -117,7 +118,7 @@ namespace SkeletalTracking
 
 
             //set scaled position
-            ScalePosition(headImage, first.Joints[JointType.Head]);
+            //ScalePosition(headImage, first.Joints[JointType.Head]);
             ScalePosition(leftEllipse, first.Joints[JointType.HandLeft]);
             ScalePosition(rightEllipse, first.Joints[JointType.HandRight]);
 
@@ -165,7 +166,7 @@ namespace SkeletalTracking
 
 
                 //Set location
-                CameraPosition(headImage, headColorPoint);
+                //CameraPosition(headImage, headColorPoint);
                 CameraPosition(leftEllipse, leftColorPoint);
                 CameraPosition(rightEllipse, rightColorPoint);
             }
@@ -218,11 +219,17 @@ namespace SkeletalTracking
             // instead of in top/left corner
 
             double newLeft = MainCanvas.ActualWidth - point.X;
-            
-            Canvas.SetLeft(element, newLeft - element.Width / 2);
-            Canvas.SetTop(element, point.Y - element.Height / 2);
 
-            if (newLeft < left || newLeft > left + width)// || scaledJoint.Position.Y < top || scaledJoint.Position.Y > top + height)
+            double scalev = MainCanvas.ActualHeight / height;
+            double scaleh = MainCanvas.ActualWidth / width;
+
+            double x = (newLeft - left) * scaleh;
+            double y = (point.Y);// - top) * scalev;
+            
+            Canvas.SetLeft(element, x - element.Width / 2);
+            Canvas.SetTop(element, y - element.Height / 2);
+
+            if (x < left || x  > left + width || y < top || y > top + height)
             {
                 //element.Visibility = Visibility.Hidden;
             }
@@ -230,6 +237,8 @@ namespace SkeletalTracking
             {
                 element.Visibility = Visibility.Visible;
             }
+
+            
 
         }
 
@@ -277,10 +286,20 @@ namespace SkeletalTracking
 
             if (VerticalStartSlider == null || VerticalEndSlider == null)
                 return;
+            top = (100 - VerticalEndSlider.Value) * 0.01 * MainCanvas.ActualHeight;
+            height = (VerticalEndSlider.Value - VerticalStartSlider.Value) * 0.01 * MainCanvas.ActualHeight;
             //top = VerticalStartSlider.Value * 0.01 * MainCanvas.ActualHeight;
             //height = (VerticalStartSlider.Value - VerticalStartSlider.Value) * 0.01 * MainCanvas.ActualHeight;
-            //Canvas.SetTop(positioningRectangle, height);
-            //positioningRectangle.Height = height;
+            Canvas.SetTop(positioningRectangle, top);
+            positioningRectangle.Height = height;
+        }
+
+        private void ToggleColorView(object sender, MouseButtonEventArgs e)
+        {
+            if (colorViewer.Visibility == Visibility.Hidden)
+                colorViewer.Visibility = Visibility.Visible;
+            else
+                colorViewer.Visibility = Visibility.Hidden;
         }
     }
 }

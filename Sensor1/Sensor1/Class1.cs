@@ -23,7 +23,7 @@ namespace Sensor1
 
         private void ListenForClients()
         {
-            this.tcpListener.Start();
+            //this.tcpListener.Start();
 
             while (true)
             {
