@@ -219,15 +219,15 @@ namespace SkeletalTracking
             // instead of in top/left corner
 
             double newLeft = MainCanvas.ActualWidth - point.X;
-
+            //newLeft = point.X;
             double scalev = MainCanvas.ActualHeight / height;
             double scaleh = MainCanvas.ActualWidth / width;
 
-            double x = (newLeft - left) * scaleh;
-            double y = (point.Y);// - top) * scalev;
+            double x = (newLeft - left)*scaleh;
+            double y = (point.Y - top) *scalev;// - top) * scalev;
             
-            Canvas.SetLeft(element, x - element.Width / 2);
-            Canvas.SetTop(element, y - element.Height / 2);
+            Canvas.SetLeft(element, x);// - element.Width / 2);
+            Canvas.SetTop(element, y);// - element.Height / 2);
 
             if (x < left || x  > left + width || y < top || y > top + height)
             {

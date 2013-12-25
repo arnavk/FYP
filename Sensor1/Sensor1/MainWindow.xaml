@@ -16,7 +16,7 @@
         <Slider x:Name="HorizontalEndSlider" Width="774" Canvas.Top="22" Maximum="100" Value="99.9" ValueChanged="AdjustColorViewer"/>
         <Slider x:Name="VerticalStartSlider" Width="26" Canvas.Top="43" Maximum="100" Value="40" ValueChanged="AdjustColorViewer" Orientation="Vertical" Height="527"/>
         <Slider x:Name="VerticalEndSlider" Width="26" Canvas.Top="43" Maximum="100" Value="99.9" ValueChanged="AdjustColorViewer" Orientation="Vertical" Height="527" Canvas.Left="24"/>
-        <Button x:Name="ColorViewToggleButton" Content="Toggle" Canvas.Left="699" Canvas.Top="102" Width="75"  MouseDoubleClick="ToggleColorView"/>
+        <Button x:Name="ColorViewToggleButton" Content="Toggle" Canvas.Left="50" Canvas.Top="39" Width="75"  MouseDoubleClick="ToggleColorView"/>
 
 
     </Canvas>
