@@ -63,7 +63,7 @@ namespace SkeletalTracking
                     screenMap[i, j] = new ScreenPosition { column = -1, row = -1 };
                 }
             }
-
+            int count = 10;
             for (i = 0; i < 50; i++)
             {
                 grid[i] = new Rectangle
@@ -222,13 +222,16 @@ namespace SkeletalTracking
 
                 if (addingOriginal)
                 {
-                    if (frames < 40)
+                    if (frames < 60)
                     {
                         byte[] pixels = new byte[colorFrame.PixelDataLength];
                         colorFrame.CopyPixelDataTo(pixels);
                         updateDifferenceMatrix(pixels, true);//adding the next 10 frames
-                        if (frames == 35)
+                        if (frames == 45)
+                        {
+                            //updateDifferenceMatrix(pixels, true);//adding the next 10 frames
                             saveImage(pixels, "nogrid");
+                        }
                     }
                     else
                     {
@@ -238,18 +241,21 @@ namespace SkeletalTracking
                     return;
                 }
 
-                if (frames < 70)// drop 30 frames
+                if (frames < 90)// drop 30 frames
                     return;
 
                 if (subtractingCheckerboarded)
                 {
-                    if (frames < 80)
+                    if (frames < 120)
                     {
                         byte[] pixels = new byte[colorFrame.PixelDataLength];
                         colorFrame.CopyPixelDataTo(pixels);
-                        updateDifferenceMatrix(pixels, false);// subtract the next 10 frames
-                        if (frames == 75)
+                        updateDifferenceMatrix(pixels, false);
+                        if (frames == 115)
+                        {
                             saveImage(pixels, "grid");
+                            //updateDifferenceMatrix(pixels, false);// subtract the next 10 frames
+                        }
                     }
                     else
                     {
@@ -313,7 +319,7 @@ namespace SkeletalTracking
             byte[] image = new byte[originalBackground.Length];
             for (i = 0; i < originalBackground.Length; i++)
             {
-                image[i] = (byte)(Math.Abs(originalBackground[i]/10));
+                image[i] = (byte)(Math.Abs(originalBackground[i]/30));
             }
             for (i = 0; i < image.Length; i += 4)
             {
@@ -345,7 +351,7 @@ namespace SkeletalTracking
             imageTest.Source =
                  BitmapSource.Create(640, 480,
                 32, 32, PixelFormats.Bgr32, null, image, stride);
-            
+            saveImage(image, "difference");  
             
         }
         private void saveImage(byte[] array, String name)
@@ -353,13 +359,10 @@ namespace SkeletalTracking
             Image image = new Image();
             image.Source = BitmapSource.Create(640, 480,
                 96, 96, PixelFormats.Bgr32, null, array, 640*4);
-            RenderTargetBitmap rtb = new RenderTargetBitmap(640, 480, 96, 96, PixelFormats.Pbgra32);
-            rtb.Render(image);
-            FileStream stream = new FileStream(name + ".jpg", FileMode.Create);
-            JpegBitmapEncoder encoder = new JpegBitmapEncoder();
-            encoder.Frames.Add(BitmapFrame.Create(rtb));
-            encoder.Save(stream);
-            stream.Close();
+            var encoder = new PngBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create((BitmapSource)image.Source));
+            using (FileStream stream = new FileStream(name + ".png", FileMode.Create))
+                encoder.Save(stream);
         }
         private void identifyColour(AllFramesReadyEventArgs e)
         {
