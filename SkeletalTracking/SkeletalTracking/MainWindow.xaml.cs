@@ -17,8 +17,12 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Microsoft.Kinect;
-using Coding4Fun.Kinect.Wpf;
+//using Coding4Fun.Kinect.Wpf;
 using System.IO; 
+using System.Drawing;
+
+using Emgu.CV;
+using Emgu.CV.Structure;
 
 namespace SkeletalTracking
 {
@@ -38,10 +42,25 @@ namespace SkeletalTracking
             public double column;
         }
 
+        public struct Square
+        {
+            public double startX;
+            public double startY;
+            public double endX;
+            public double endY;
+            //public PointF topLeft;
+            //public PointF topRight;
+            //public PointF bottomLeft;
+            //public PointF bottomRight;
+        }
+
         bool closing = false;
         const int skeletonCount = 6; 
         Skeleton[] allSkeletons = new Skeleton[skeletonCount];
         ScreenPosition[,] screenMap = new ScreenPosition [480, 640];
+
+        Square[,] wallSquares;
+        
         double[] originalBackground = new double[640 * 480 * 4];
 //        double[] checkerboardedBackground = new double[640 * 480 * 4];
         int frames = 0;
@@ -50,7 +69,8 @@ namespace SkeletalTracking
         bool calibrationComplete = false;
         bool addingOriginal = true;
         bool subtractingCheckerboarded = true;
-        Rectangle[] grid = new Rectangle[50];
+        System.Windows.Shapes.Rectangle[,] grid;
+        int gridSize = 10;
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -63,24 +83,43 @@ namespace SkeletalTracking
                     screenMap[i, j] = new ScreenPosition { column = -1, row = -1 };
                 }
             }
-            int count = 10;
-            for (i = 0; i < 50; i++)
+            grid = new System.Windows.Shapes.Rectangle[gridSize, gridSize];
+            for (i = 0; i < gridSize; i++)
             {
-                grid[i] = new Rectangle
+                for (j = 0; j < gridSize; j++)
                 {
-                    Fill = Brushes.Blue,
-                    Width = MainCanvas.ActualWidth / 10,
-                    Height = MainCanvas.ActualHeight / 10,
-                };
-                MainCanvas.Children.Add(grid[i]);
-                Canvas.SetLeft(grid[i], (((i * 20) + ((i / 5) % 2 * 10)) % 100) * MainCanvas.ActualWidth / 100);
-                Canvas.SetTop(grid[i], ((int)(i / 5) * 10 * MainCanvas.ActualHeight / 100));
-                grid[i].Visibility = Visibility.Hidden;
+                    grid[i, j] = new System.Windows.Shapes.Rectangle
+                    {
+                        Fill = System.Windows.Media.Brushes.Blue,
+                        Width = MainCanvas.ActualWidth / gridSize,
+                        Height = MainCanvas.ActualHeight / gridSize,
+                    };
+                    MainCanvas.Children.Add(grid[i, j]);
+                    Canvas.SetLeft(grid[i, j], j * (gridSize / 100.0) * MainCanvas.ActualWidth);
+                    Canvas.SetTop(grid[i, j], i * (gridSize / 100.0) * MainCanvas.ActualHeight);
+                    // Console.WriteLine("(" + Canvas.GetLeft(grid[i, j]) + ", " + Canvas.GetTop(grid[i, j]) + ")");
+                    grid[i, j].Visibility = Visibility.Hidden;
+                }
             }
+            //for (i = 0; i < 50; i++)
+            //{
+            //    grid[i] = new System.Windows.Shapes.Rectangle
+            //    {
+            //        Fill = System.Windows.Media.Brushes.Blue,
+            //        Width = MainCanvas.ActualWidth / 10,
+            //        Height = MainCanvas.ActualHeight / 10,
+            //    };
+            //    MainCanvas.Children.Add(grid[i]);
+            //    Canvas.SetLeft(grid[i], (((i * 20) + ((1 - (i / 5) % 2) * 10)) % 100) * MainCanvas.ActualWidth / 100);
+            //    Canvas.SetTop(grid[i], ((int)(i / 5) * 10 * MainCanvas.ActualHeight / 100));
+            //    grid[i].Visibility = Visibility.Hidden;
+            //}
 
             rightEllipse.Visibility = Visibility.Hidden;
             leftEllipse.Visibility = Visibility.Hidden;
-
+            chessboard.Height = MainCanvas.ActualHeight;
+            chessboard.Width = MainCanvas.ActualWidth;
+            chessboard.Visibility = Visibility.Hidden;
             imageTest.Visibility = Visibility.Hidden;
             Canvas.SetTop(imageTest, 0);
             Canvas.SetLeft(imageTest, 0);
@@ -101,21 +140,21 @@ namespace SkeletalTracking
             {
                 return;
             }
-
+            
             
 
 
             var parameters = new TransformSmoothParameters
             {
-                Smoothing = 0.3f,
+                Smoothing = 0.75f,
                 Correction = 0.0f,
                 Prediction = 0.0f,
-                JitterRadius = 1.0f,
-                MaxDeviationRadius = 0.5f
+                JitterRadius = 0.05f,
+                MaxDeviationRadius = 0.05f
             };
             sensor.SkeletonStream.Enable(parameters);
-
-            sensor.SkeletonStream.Enable();
+            //sensor.ElevationAngle = 5;
+            //sensor.SkeletonStream.Enable();
 
             sensor.AllFramesReady += new EventHandler<AllFramesReadyEventArgs>(sensor_AllFramesReady);
             sensor.DepthStream.Enable(DepthImageFormat.Resolution640x480Fps30); 
@@ -124,6 +163,7 @@ namespace SkeletalTracking
             try
             {
                 sensor.Start();
+                sensor.ElevationAngle = 5;
             }
             catch (System.IO.IOException)
             {
@@ -168,33 +208,6 @@ namespace SkeletalTracking
 
         }
 
-        //returns true if the rectangle has to be shifted and no calculations shoud be done
-        bool updateFrame()
-        {
-            frames++;
-            if (frames % 11 == 0)
-            {
-                frames = 0;
-                double left = Canvas.GetLeft(rectangle) + rectangle.Width;
-                double top = Canvas.GetTop(rectangle);
-                if (left + rectangle.Width > MainCanvas.ActualWidth)
-                {
-                    left = 0;
-                    top += rectangle.Height;
-                    if (top >= MainCanvas.ActualHeight)
-                    {
-                        mapping = false;
-                        rectangle.Visibility = Visibility.Hidden;
-                    }
-                }
-                Canvas.SetLeft(rectangle, left);
-                Canvas.SetTop(rectangle, top);
-                return false;
-            }
-            return true;
-        }
-
-        //set frames to 0 before invoking this method
         private bool countFrames(int count)
         {
             frames++;
@@ -236,6 +249,9 @@ namespace SkeletalTracking
                     else
                     {
                         addingOriginal = false;
+
+                        //chessboard.Visibility = Visibility.Visible;
+
                         updateGridVisibility(Visibility.Visible); // show the grid
                     }
                     return;
@@ -260,6 +276,7 @@ namespace SkeletalTracking
                     else
                     {
                         subtractingCheckerboarded = false;
+                        //chessboard.Visibility = Visibility.Hidden;
                         updateGridVisibility(Visibility.Hidden); // hide the grid
                     }
                     return;
@@ -279,8 +296,14 @@ namespace SkeletalTracking
 
         private void updateGridVisibility(Visibility visibility)
         {
-            for (int i = 0; i < grid.Length; i++)
-                grid[i].Visibility = visibility;
+            for (int i = 0; i < gridSize; i++)
+            {
+                for (int j = 0; j < gridSize; j++)
+                {
+                    if ((i % 2 == 0 && j % 2 == 1) || (i % 2 == 1 && j % 2 == 0))
+                        grid[i, j].Visibility = visibility;
+                }
+            }
         }
 
 
@@ -290,30 +313,13 @@ namespace SkeletalTracking
             if (add)
                 multiplier = 1;
             int i = 0;
-            double size;
             for (i = 0; i < pixels.Length; i++)
             {
                 originalBackground[i] += multiplier * pixels[i];
             }
-            //    if (i % 4 == 0 && i > 0)
-            //    {
-            //        size = originalBackground[i - 4] * originalBackground[i - 4] + originalBackground[i - 3] * originalBackground[i - 3] + originalBackground[i - 2] * originalBackground[i - 2] + originalBackground[i - 1] * originalBackground[i - 1];
-            //        size = Math.Sqrt(size);
-            //        originalBackground[i - 4] /= size;
-            //        originalBackground[i - 3] /= size;
-            //        originalBackground[i - 2] /= size;
-            //        originalBackground[i - 1] /= size;
-            //    }
-            //}
-            //size = Math.Sqrt(originalBackground[i - 4] * originalBackground[i - 4] + originalBackground[i - 3] * originalBackground[i - 3] + originalBackground[i - 2] * originalBackground[i - 2] + originalBackground[i - 1] * originalBackground[i - 1]);
-            //originalBackground[i - 4] /= size;
-            //originalBackground[i - 3] /= size;
-            //originalBackground[i - 2] /= size;
-            //originalBackground[i - 1] /= size;
         }
         private void calculateMappingMatrix()
         {
-            //Console.WriteLine("Matrix ho!");
             int i;
             byte val;
             byte[] image = new byte[originalBackground.Length];
@@ -324,39 +330,187 @@ namespace SkeletalTracking
             for (i = 0; i < image.Length; i += 4)
             {
                 if (Math.Sqrt(image[i] * image[i] + image[i + 1] * image[i + 1] + image[i + 2] * image[i + 2] + image[i + 3] * image[i + 3]) > 15)
-                    val = 255;
-                else
                     val = 0;
+                else
+                    val = 255;
                 image[i] = val;
                 image[i + 1] = val;
                 image[i + 2] = val;
                 image[i + 3] = val;
             }
-
-            //for (i = 0; i < image.Length; i++)
-            //{
-            //    if (image[i] > 10)
-            //        image[i] = 255;
-            //    else
-            //        image[i] = 0;
-            //}
-            //for (int i = 0; i < originalBackground.Length; i++)
-            //{
-                //originalBackground[i] = 0; //i % 255;
-            //}
             int stride = 640 * 4;
-            Image image1 = new Image();
+            //byte[] flippedImage = new byte[image.Length];
 
+            //int r, c;
+            //for (r = 0; r < 480; r++)
+            //{
+            //    for (c = 639; c >= 0; c--)
+            //    {
+            //        int crev = 639 - c;
+            //        int fi = r * 640 + 
+            //        i+=4;
+            //    }
+            //}
+            
             imageTest.Visibility = Visibility.Visible;
             imageTest.Source =
                  BitmapSource.Create(640, 480,
                 32, 32, PixelFormats.Bgr32, null, image, stride);
-            saveImage(image, "difference");  
+
+            //imageTest.RenderTransformOrigin = new System.Windows.Point(0.5, 0.5);
+            //ScaleTransform flipTrans = new ScaleTransform();
+            //flipTrans.ScaleX = -1;
+            ////flipTrans.ScaleY = -1;
+            //imageTest.RenderTransform = flipTrans;
+
+            saveImage(imageTest, "difference");
+            //flipImage();
+
+            //saveImage(image, "difference2");
+            PointF[] corners = getGridCorners(gridSize - 1);
+            if (corners == null)
+            {
+                Console.WriteLine("No corners found, try again."); // TODO - Make this an alert
+                return;
+                
+            }
+            int r = 0, c = 0, size = gridSize - 1;
+            wallSquares = new Square[size - 1, size - 1];
+            for (i = 0; i < size - 1; i++)
+            {
+                for (int j = 0; j < size - 1; j++)
+                {
+                    wallSquares[i, j] = new Square { startX = 0, startY = 0, endX = 0, endY = 0 };
+                }
+            }
+            //if (corners[corners.Length - 1].X < corners[0].X)
+            //{
+            //    for (i = 0; i < corners.Length / 2; i++) ;
+            //    {
+            //        PointF temp = corners[i];
+            //        corners[i] = corners[corners.Length - 1 - i];
+            //        corners[corners.Length - 1 - i] = temp;
+            //    }
+
+            //}
+
+
+            for (i = 0; i < corners.Length; i++)
+            {
+                //Console.WriteLine("(" + corners[i].X + ", " + corners[i].Y + ")");
+                corners[i].X = 640 - corners[i].X;
+            }
+            Console.WriteLine("transformed");
+            for (i = 0; i < size; i++)
+            {
+                for (int j = 0; j < size/2; j++)
+                {
+                    int c1 = i * size + j, c2 = i * size + (size - 1 - j);
+                    //Console.WriteLine(c1 + " and " + c2);
+                    PointF temp = corners[c1];
+                    corners[c1] = corners[c2];
+                    corners[c2] = temp;
+                }
+            }
+
+            for (i = 0; i < corners.Length; i++)
+            {
+                r = i / size;
+                c = i % size;
+                //c = size - 2 - c;
+                Console.WriteLine("(" + corners[i].X + ", " + corners[i].Y + ")");
+                if (r != size - 1 && c != size - 1)
+                {
+                    wallSquares[r, c].startX = corners[i].X;
+                    wallSquares[r, c].startY = corners[i].Y;
+                }
+                if (r != 0 && c != 0)
+                {
+                    wallSquares[r - 1, c - 1].endX = corners[i].X;
+                    wallSquares[r - 1, c - 1].endY = corners[i].Y;
+                }
+                //if (r != size - 1 && c >= 0)
+                //{
+                //    wallSquares[r, c].startX = corners[i].X;
+                //    wallSquares[r, c].startY = corners[i].Y;
+                //}
+                //if (r != 0 && c != size - 2)
+                //{
+                //    wallSquares[r - 1, c + 1].endX = corners[i].X;
+                //    wallSquares[r - 1, c + 1].endY = corners[i].Y;
+                //}
+            }
+
+            imageTest.Visibility = Visibility.Hidden;
+            //testPositioning();
+        }
+
+        private void testPositioning()
+        {
+            if (leftEllipse.Visibility == Visibility.Hidden)
+            {
+                leftEllipse.Visibility = Visibility.Visible;
+            }
+
+            for (int i = 210; i < 365; i++)
+            {
+                for (int j = 145; j < 350; j++)
+                {
+                    System.Windows.Point p1 = new System.Windows.Point(j, i);
+                    System.Windows.Point p2 = convertToScreenPoint(p1);
+                    Console.WriteLine("(" + p1.X + ", " + p1.Y + ")\t-- >\t(" + p2.X + ", " + p2.Y + ")");
+                    Canvas.SetLeft(leftEllipse, p2.X);
+                    Canvas.SetTop(leftEllipse, p2.Y);
+                }
+            }
+
             
+
+
+            
+        }
+        private void flipImage()
+        {
+            System.Drawing.Image i = System.Drawing.Image.FromFile("difference.png");
+            i.RotateFlip(RotateFlipType.RotateNoneFlipX);
+            i.Save("difference2.png");
+        }
+        private System.Windows.Point convertToScreenPoint(System.Windows.Point wallPoint)
+        {
+            int i, j;
+            System.Windows.Point screenPoint = new System.Windows.Point(0, 0);
+            for (i = 0; i < gridSize - 2; i++)
+            {
+                for (j = 0; j < gridSize - 2; j++)
+                {
+                    if (wallPoint.X > wallSquares[i, j].startX && wallPoint.X <= wallSquares[i, j].endX && wallPoint.Y > wallSquares[i, j].startY && wallPoint.Y <= wallSquares[i, j].endY)
+                    {
+                        double px = (wallPoint.X - wallSquares[i, j].startX) / (wallSquares[i, j].endX - wallSquares[i, j].startX);
+                        double py = (wallPoint.Y - wallSquares[i, j].startY) / (wallSquares[i, j].endY - wallSquares[i, j].startY);
+                        screenPoint.X = (px * MainCanvas.ActualWidth / gridSize) + Canvas.GetLeft(grid[i + 1, j + 1]);
+                        screenPoint.Y = (py * MainCanvas.ActualHeight/ gridSize) + Canvas.GetTop(grid[i + 1, j + 1]);
+
+                        if (px > 1)
+                        {
+                            Console.WriteLine("Start :\t(" + wallSquares[i, j].startX + ", " + wallSquares[i, j].startY + ")");
+                            Console.WriteLine("End : \t(" + wallSquares[i, j].endX + ", " + wallSquares[i, j].endY + ")");
+                            Console.WriteLine("Point :\t(" + wallPoint.X + ", " + wallPoint.Y + ")");
+                            Console.WriteLine( px + " = " + (wallPoint.X - wallSquares[i, j].startX) + "/" + (wallSquares[i, j].endY - wallSquares[i, j].startY));
+                        }
+
+                        
+
+                        //screenPoint.X = Canvas.GetLeft(grid[i + 1, j + 1]);
+                        //screenPoint.Y = Canvas.GetTop(grid[i + 1, j + 1]);
+                        return screenPoint;
+                    }
+                }
+            }
+            return screenPoint;
         }
         private void saveImage(byte[] array, String name)
         {
-            Image image = new Image();
+            System.Windows.Controls.Image image = new System.Windows.Controls.Image();
             image.Source = BitmapSource.Create(640, 480,
                 96, 96, PixelFormats.Bgr32, null, array, 640*4);
             var encoder = new PngBitmapEncoder();
@@ -364,52 +518,12 @@ namespace SkeletalTracking
             using (FileStream stream = new FileStream(name + ".png", FileMode.Create))
                 encoder.Save(stream);
         }
-        private void identifyColour(AllFramesReadyEventArgs e)
+        private void saveImage(System.Windows.Controls.Image image, String name)
         {
-            //Console.WriteLine("\nNew Frame");
-            using (ColorImageFrame colorFrame = e.OpenColorImageFrame())
-            {
-                if (colorFrame == null)
-                {
-                    return;
-                }
-                if (!mapping || !updateFrame())
-                {
-                    return;
-                }
-
-                byte[] pixels = new byte[colorFrame.PixelDataLength];
-                colorFrame.CopyPixelDataTo(pixels);
-                //Console.WriteLine(colorFrame.PixelDataLength);
-                int stride = colorFrame.Width * 4;
-                int error = 10;
-                double top = Canvas.GetTop(rectangle), left = Canvas.GetLeft(rectangle), width = rectangle.Width, height = rectangle.Height;
-
-                for (int i = 0; i < colorFrame.PixelDataLength; i += 4)
-                {
-                    //Console.WriteLine("(" + pixels[i] + "," + pixels[i + 1] + "," + pixels[i + 2] + ")");
-                    if (Math.Abs(pixels[i] - 137) <= error && Math.Abs(pixels[i + 1] - 162) <= error && Math.Abs(pixels[i + 2] - 148) <= error)
-                    {
-                        int count = i / 4;
-                        int r = (count / colorFrame.Width), c = (count % colorFrame.Width);
-                        //Console.WriteLine("at (" + (count / colorFrame.Width) + "," + (count % colorFrame.Width) + ")");
-
-                        ScreenPosition mappedPosition = new ScreenPosition { row = top + (height / 2), column = left + (width / 2) };
-                        screenMap[r, c] = mappedPosition;
-
-                        //int j, k;
-                                                //for ( j = top; j < top + height; j ++ )
-                        //{
-                        //    for ( k = left; k < left + width; k++ )
-                        //    {
-
-                    }
-                }
-
-
-
-
-            }
+            var encoder = new PngBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create((BitmapSource)image.Source));
+            using (FileStream stream = new FileStream(name + ".png", FileMode.Create))
+                encoder.Save(stream);
         }
 
         void GetCameraPoint(Skeleton first, AllFramesReadyEventArgs e)
@@ -515,14 +629,12 @@ namespace SkeletalTracking
                 element.Visibility = Visibility.Visible;
                 Console.WriteLine("Made shizz visible");
             }
-            if (screenMap[point.Y, point.X].column == -1)
-            {
-                element.Visibility = Visibility.Hidden;
-                return;
-            }
 
-            Canvas.SetLeft(element, screenMap[point.Y, point.X].column);
-            Canvas.SetTop(element, screenMap[point.Y, point.X].row);
+
+            System.Windows.Point screenPoint = convertToScreenPoint(new System.Windows.Point (640 - point.X, point.Y));
+            Console.WriteLine("(" + point.X + ", " + point.Y + ")\t-- >\t("+ screenPoint.X + ", " + screenPoint.Y + ")");
+            Canvas.SetLeft(element, screenPoint.X);
+            Canvas.SetTop(element, screenPoint.Y);
         }
 
         private void ScalePosition(FrameworkElement element, Joint joint)
@@ -538,17 +650,68 @@ namespace SkeletalTracking
             
         }
 
+        private PointF[] getGridCorners(int numberOfCorners)
+        {
+            // get the chess board width
+            //Console.WriteLine("Chess board width");
+            //Int32 width = Convert.ToInt32(Console.ReadLine());
+
+            // get the chess board height
+            //Console.WriteLine("Chess board height");
+            //Int32 height = Convert.ToInt32(Console.ReadLine());
+
+            // define the chess board size
+            System.Drawing.Size patternSize = new System.Drawing.Size(numberOfCorners, numberOfCorners);
+
+            // get the input gray scale image
+            //Image<Gray, Byte> InputImage1 = new Image<Gray, Byte>("difference.png");
+            //InputImage1._Flip(Emgu.CV.CvEnum.FLIP.HORIZONTAL);
+            //InputImage1.Save("difference2.png");
+            Image<Gray, Byte> InputImage = new Image<Gray, Byte>("difference.png");
+            // show the input image
+            //CvInvoke.cvShowImage("gray scale input image", InputImage.Ptr);
+
+            // create a buffer to store the chess board corner locations
+            PointF[] corners = new PointF[] { };
+
+            // find the chess board corners
+            corners = CameraCalibration.FindChessboardCorners(InputImage, patternSize, Emgu.CV.CvEnum.CALIB_CB_TYPE.ADAPTIVE_THRESH | Emgu.CV.CvEnum.CALIB_CB_TYPE.FILTER_QUADS);
+            
+            
+            //if (corners == null)
+            //{
+            //    Console.WriteLine("Nothing found");
+            //    CvInvoke.cvWaitKey(0);
+            //    return corners;
+            //}
+            //for (int i = 0; i < corners.Length; i++)
+            //{
+            //    Console.WriteLine("(" + corners[i].X + ", " + corners[i].Y + ")");
+            //}
+
+            // draw the chess board corner markers on the image
+            //CameraCalibration.DrawChessboardCorners(InputImage, patternSize, corners);
+
+            // show the result
+            //CvInvoke.cvShowImage("Result", InputImage.Ptr);
+            return corners;
+            // pause
+            //CvInvoke.cvWaitKey(0);
+        }
+        
+
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             closing = true; 
-            StopKinect(kinectSensorChooser1.Kinect); 
+            StopKinect(kinectSensorChooser1.Kinect);
+            //DetectCorners();
         }
 
         private void MouseDoubleClickOccured(object sender, MouseButtonEventArgs e)
         {
             startButton.Visibility = Visibility.Hidden;
-            rectangle.Visibility = Visibility.Hidden;
+            
             //rectangle.Height = MainCanvas.ActualHeight / 10;
             //rectangle.Width = MainCanvas.ActualWidth / 10;
             //Canvas.SetLeft(rectangle, 0);

@@ -3,16 +3,16 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="600" Width="800" Loaded="Window_Loaded" 
         xmlns:my="clr-namespace:Microsoft.Samples.Kinect.WpfViewers;assembly=Microsoft.Samples.Kinect.WpfViewers" 
-        Closing="Window_Closing" WindowState="Maximized">       
+        Closing="Window_Closing" WindowState="Maximized" WindowStyle="None">       
     <Canvas Name="MainCanvas">
         <my:KinectColorViewer Canvas.Left="0" Canvas.Top="0" Width="640" Height="480" Name="kinectColorViewer1" 
                               Kinect="{Binding ElementName=kinectSensorChooser1, Path=Kinect}" Visibility="Visible" />
         <Ellipse Canvas.Left="223" Canvas.Top="86" Height="50" Name="leftEllipse"  Width="50" Fill="#FF4D298D" Opacity="1" Stroke="White" />
         <Ellipse Canvas.Left="100" Canvas.Top="0" Fill="#FF2CACE3" Height="50" Name="rightEllipse" Width="50" Opacity="1" Stroke="White" />
         <my:KinectSensorChooser Canvas.Left="250" Canvas.Top="380" Name="kinectSensorChooser1" Width="328" />
-        <Rectangle x:Name="rectangle" Fill="#FF329632" Height="167" Stroke="White" Width="167" StrokeThickness="0"/>
-        <Button x:Name="startButton" Content="Start" Canvas.Left="10" Canvas.Top="178" Width="75" MouseDoubleClick="MouseDoubleClickOccured"/>
         <Image x:Name="imageTest" Height="480" Canvas.Left="0" Canvas.Top="0" Width="640"/>
+        <Image x:Name="chessboard" Height="570" Width="792" Stretch="Fill" Source="chessboard_green_2.png"/>
+        <Button x:Name="startButton" Content="Start" Canvas.Left="10" Canvas.Top="178" Width="75" MouseDoubleClick="MouseDoubleClickOccured"/>
 
     </Canvas>
 </Window>
