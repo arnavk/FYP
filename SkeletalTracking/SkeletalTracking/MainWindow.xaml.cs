@@ -71,6 +71,8 @@ namespace SkeletalTracking
         bool subtractingCheckerboarded = true;
         System.Windows.Shapes.Rectangle[,] grid;
         int gridSize = 10;
+        System.Windows.Shapes.Line rightArm;
+        System.Windows.Shapes.Line leftArm;
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -117,12 +119,34 @@ namespace SkeletalTracking
 
             rightEllipse.Visibility = Visibility.Hidden;
             leftEllipse.Visibility = Visibility.Hidden;
-            chessboard.Height = MainCanvas.ActualHeight;
-            chessboard.Width = MainCanvas.ActualWidth;
-            chessboard.Visibility = Visibility.Hidden;
+            centerEllipse.Visibility = Visibility.Hidden;
             imageTest.Visibility = Visibility.Hidden;
             Canvas.SetTop(imageTest, 0);
             Canvas.SetLeft(imageTest, 0);
+
+            rightArm = new System.Windows.Shapes.Line();
+            rightArm.Stroke = System.Windows.Media.Brushes.LightSteelBlue;
+            rightArm.X1 = 0;
+            rightArm.X2 = 0;
+            rightArm.Y1 = 0;
+            rightArm.Y2 = 00;
+            rightArm.HorizontalAlignment = HorizontalAlignment.Left;
+            rightArm.VerticalAlignment = VerticalAlignment.Center;
+            rightArm.StrokeThickness = 20;
+            MainCanvas.Children.Add(rightArm);
+            rightArm.Visibility = Visibility.Hidden;
+
+            leftArm = new System.Windows.Shapes.Line();
+            leftArm.Stroke = System.Windows.Media.Brushes.LightSteelBlue;
+            leftArm.X1 = 0;
+            leftArm.X2 = 0;
+            leftArm.Y1 = 0;
+            leftArm.Y2 = 00;
+            leftArm.HorizontalAlignment = HorizontalAlignment.Center;
+            leftArm.VerticalAlignment = VerticalAlignment.Center;
+            leftArm.StrokeThickness = 20;
+            MainCanvas.Children.Add(leftArm);
+            leftArm.Visibility = Visibility.Hidden;
 
             kinectSensorChooser1.KinectSensorChanged += new DependencyPropertyChangedEventHandler(kinectSensorChooser1_KinectSensorChanged);
 
@@ -543,11 +567,20 @@ namespace SkeletalTracking
                 DepthImagePoint headDepthPoint =
                     depth.MapFromSkeletonPoint(first.Joints[JointType.Head].Position);
                 //left hand
-                DepthImagePoint leftDepthPoint =
+                DepthImagePoint leftHandDepthPoint =
                     depth.MapFromSkeletonPoint(first.Joints[JointType.HandLeft].Position);
+                //left elbow
+                DepthImagePoint leftElbowDepthPoint =
+                    depth.MapFromSkeletonPoint(first.Joints[JointType.ElbowLeft].Position);
                 //right hand
-                DepthImagePoint rightDepthPoint =
+                DepthImagePoint rightHandDepthPoint =
                     depth.MapFromSkeletonPoint(first.Joints[JointType.HandRight].Position);
+                //right elbow
+                DepthImagePoint rightElbowDepthPoint =
+                    depth.MapFromSkeletonPoint(first.Joints[JointType.ElbowRight].Position);
+                //right shoulder
+                DepthImagePoint rightShoulderDepthPoint =
+                    depth.MapFromSkeletonPoint(first.Joints[JointType.ShoulderRight].Position);
 
 
                 //Map a depth point to a point on the color image
@@ -556,19 +589,33 @@ namespace SkeletalTracking
                     depth.MapToColorImagePoint(headDepthPoint.X, headDepthPoint.Y,
                     ColorImageFormat.RgbResolution640x480Fps30);
                 //left hand
-                ColorImagePoint leftColorPoint =
-                    depth.MapToColorImagePoint(leftDepthPoint.X, leftDepthPoint.Y,
+                ColorImagePoint leftHandColorPoint =
+                    depth.MapToColorImagePoint(leftHandDepthPoint.X, leftHandDepthPoint.Y,
+                    ColorImageFormat.RgbResolution640x480Fps30); 
+                //left elbow
+                ColorImagePoint leftElbowColorPoint =
+                    depth.MapToColorImagePoint(leftElbowDepthPoint.X, leftElbowDepthPoint.Y,
                     ColorImageFormat.RgbResolution640x480Fps30);
                 //right hand
-                ColorImagePoint rightColorPoint =
-                    depth.MapToColorImagePoint(rightDepthPoint.X, rightDepthPoint.Y,
+                ColorImagePoint rightHandColorPoint =
+                    depth.MapToColorImagePoint(rightHandDepthPoint.X, rightHandDepthPoint.Y,
+                    ColorImageFormat.RgbResolution640x480Fps30);
+                //right elbow
+                ColorImagePoint rightElbowColorPoint =
+                    depth.MapToColorImagePoint(rightElbowDepthPoint.X, rightElbowDepthPoint.Y,
+                    ColorImageFormat.RgbResolution640x480Fps30);
+                //right shoulder
+                ColorImagePoint rightShoulderColorPoint =
+                    depth.MapToColorImagePoint(rightShoulderDepthPoint.X, rightShoulderDepthPoint.Y,
                     ColorImageFormat.RgbResolution640x480Fps30);
 
 
                 //Set location
-                
-                CameraPosition(leftEllipse, leftColorPoint);
-                CameraPosition(rightEllipse, rightColorPoint);
+                DrawBone(leftArm, rightHandColorPoint, rightElbowColorPoint);
+                DrawBone(rightArm, rightElbowColorPoint, rightShoulderColorPoint);
+                CameraPosition(leftEllipse, rightHandColorPoint);
+                CameraPosition(rightEllipse, rightElbowColorPoint);
+                CameraPosition(centerEllipse, rightShoulderColorPoint);
             }        
         }
 
@@ -617,6 +664,29 @@ namespace SkeletalTracking
             }
         }
 
+        private void DrawBone(System.Windows.Shapes.Line line, ColorImagePoint point1, ColorImagePoint point2)
+        {
+            //Divide by 2 for width and height so point is right in the middle 
+            // instead of in top/left corner
+            //Canvas.SetLeft(element, point.X - element.Width / 2);
+            //Canvas.SetTop(element, point.Y - element.Height / 2);
+
+                if (line.Visibility == Visibility.Hidden)
+            {
+                line.Visibility = Visibility.Visible;
+                Console.WriteLine("Made shizz visible");
+            }
+
+
+            System.Windows.Point screenPoint1 = convertToScreenPoint(new System.Windows.Point(640 - point1.X, point1.Y));
+            System.Windows.Point screenPoint2 = convertToScreenPoint(new System.Windows.Point(640 - point2.X, point2.Y));
+            //Console.WriteLine("(" + point.X + ", " + point.Y + ")\t-- >\t(" + screenPoint.X + ", " + screenPoint.Y + ")");
+            line.X1 = screenPoint1.X;
+            line.X2 = screenPoint2.X;
+            line.Y1 = screenPoint1.Y;
+            line.Y2 = screenPoint2.Y;
+        }
+
         private void CameraPosition(FrameworkElement element, ColorImagePoint point)
         {
             //Divide by 2 for width and height so point is right in the middle 
@@ -633,8 +703,8 @@ namespace SkeletalTracking
 
             System.Windows.Point screenPoint = convertToScreenPoint(new System.Windows.Point (640 - point.X, point.Y));
             Console.WriteLine("(" + point.X + ", " + point.Y + ")\t-- >\t("+ screenPoint.X + ", " + screenPoint.Y + ")");
-            Canvas.SetLeft(element, screenPoint.X);
-            Canvas.SetTop(element, screenPoint.Y);
+            Canvas.SetLeft(element, screenPoint.X - element.Width / 2);
+            Canvas.SetTop(element, screenPoint.Y - element.Height / 2);
         }
 
         private void ScalePosition(FrameworkElement element, Joint joint)

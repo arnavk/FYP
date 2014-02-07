@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Sensor1
+namespace CanvasTest
 {
     class Server
     {
@@ -16,14 +16,30 @@ namespace Sensor1
 
         public Server()
         {
-            this.tcpListener = new TcpListener(System.Net.IPAddress.Parse("172.22.147.91"), 8000);//new TcpListener(IPAddress.Any, 3200);
+            this.tcpListener = new TcpListener(System.Net.IPAddress.Parse(GetIP4Address()), 8000);//new TcpListener(IPAddress.Any, 3200);
             this.listenThread = new Thread(new ThreadStart(ListenForClients));
             this.listenThread.Start();
         }
 
+        public string GetIP4Address()
+        {
+            string IP4Address = String.Empty;
+
+            foreach (IPAddress IPA in Dns.GetHostAddresses(Dns.GetHostName()))
+            {
+                if (IPA.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    IP4Address = IPA.ToString();
+                    break;
+                }
+            }
+
+            return IP4Address;
+        }
+
         private void ListenForClients()
         {
-            //this.tcpListener.Start();
+            this.tcpListener.Start();
 
             while (true)
             {
@@ -81,3 +97,4 @@ namespace Sensor1
         }
     }
 }
+
