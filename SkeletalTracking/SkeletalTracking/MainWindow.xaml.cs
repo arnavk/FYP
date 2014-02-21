@@ -74,6 +74,12 @@ namespace SkeletalTracking
         System.Windows.Shapes.Line rightArm;
         System.Windows.Shapes.Line leftArm;
 
+        System.Windows.Point lastKnownPoint;
+        System.Windows.Media.Color currentColor;
+        Server TCPServer;
+        Boolean isPainting;
+        Boolean initialized;
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             //screenMap = new double [(int) Math.Ceiling(MainCanvas.Height), (int) Math.Ceiling(MainCanvas.Width)];
@@ -149,6 +155,30 @@ namespace SkeletalTracking
             leftArm.Visibility = Visibility.Hidden;
 
             kinectSensorChooser1.KinectSensorChanged += new DependencyPropertyChangedEventHandler(kinectSensorChooser1_KinectSensorChanged);
+
+            inkCanvas.Visibility = Visibility.Hidden;
+            currentColor = Colors.CadetBlue;
+            isPainting = false;
+            initialized = false;
+            TCPServer = new Server();
+            TCPServer.ServerEvent += TCPServer_ServerEvent;
+
+        }
+
+        void TCPServer_ServerEvent(string s)
+        {
+            //MessageBox.Show(s);
+            Console.WriteLine(s);
+            if (s.StartsWith("/stop"))
+                isPainting = false;
+            else
+            {
+                string colorHex = "#" + s.Substring(7);
+                Console.WriteLine("YOLO " + colorHex);
+                isPainting = true;
+                System.Drawing.Color c = System.Drawing.ColorTranslator.FromHtml(colorHex);
+                currentColor = System.Windows.Media.Color.FromArgb(c.A, c.R, c.G, c.B);
+            }
 
         }
 
@@ -466,6 +496,7 @@ namespace SkeletalTracking
             }
 
             imageTest.Visibility = Visibility.Hidden;
+            inkCanvas.Visibility = Visibility.Visible;
             //testPositioning();
         }
 
@@ -502,6 +533,7 @@ namespace SkeletalTracking
         private System.Windows.Point convertToScreenPoint(System.Windows.Point wallPoint)
         {
             int i, j;
+            Console.WriteLine("YOLO");
             System.Windows.Point screenPoint = new System.Windows.Point(0, 0);
             for (i = 0; i < gridSize - 2; i++)
             {
@@ -530,6 +562,7 @@ namespace SkeletalTracking
                     }
                 }
             }
+            Console.WriteLine("yolo"+screenPoint.ToString());
             return screenPoint;
         }
         private void saveImage(byte[] array, String name)
@@ -555,6 +588,7 @@ namespace SkeletalTracking
 
             using (DepthImageFrame depth = e.OpenDepthImageFrame())
             {
+                Console.WriteLine("Loggin, yo!");
                 if (depth == null ||
                     kinectSensorChooser1.Kinect == null)
                 {
@@ -613,9 +647,12 @@ namespace SkeletalTracking
                 //Set location
                 DrawBone(leftArm, rightHandColorPoint, rightElbowColorPoint);
                 DrawBone(rightArm, rightElbowColorPoint, rightShoulderColorPoint);
+
                 CameraPosition(leftEllipse, rightHandColorPoint);
                 CameraPosition(rightEllipse, rightElbowColorPoint);
                 CameraPosition(centerEllipse, rightShoulderColorPoint);
+
+                Paint(convertToScreenPoint(new System.Windows.Point (640 - rightHandColorPoint.X, rightHandColorPoint.Y)));
             }        
         }
 
@@ -707,6 +744,8 @@ namespace SkeletalTracking
             Canvas.SetTop(element, screenPoint.Y - element.Height / 2);
         }
 
+        
+
         private void ScalePosition(FrameworkElement element, Joint joint)
         {
             //convert the value to X/Y
@@ -792,5 +831,43 @@ namespace SkeletalTracking
             calibrationComplete = false;
             
         }
+
+        public void Paint(System.Windows.Point nextPoint)
+        {
+            if (nextPoint.X == 0 && nextPoint.Y == 0)
+            {
+                initialized = false;
+                return;
+            }
+            if (!initialized)
+            {
+                initialized = true;
+                lastKnownPoint = new System.Windows.Point();
+                lastKnownPoint = nextPoint;
+                Console.WriteLine("Replacing point");
+                return;
+            }
+            if (!isPainting)
+            {
+                lastKnownPoint = nextPoint;
+                return;
+            }
+            Line line = new Line();
+            line.StrokeDashCap = PenLineCap.Round;
+            line.StrokeStartLineCap = PenLineCap.Round;
+            line.StrokeEndLineCap = PenLineCap.Round;
+            line.Stroke = new SolidColorBrush(currentColor);
+            line.StrokeThickness = 10;
+
+            line.X1 = lastKnownPoint.X;
+            line.Y1 = lastKnownPoint.Y;
+            line.X2 = nextPoint.X;
+            line.Y2 = nextPoint.Y;
+
+            lastKnownPoint = nextPoint;
+
+            inkCanvas.Children.Add(line);
+        }
+
     }
 }
