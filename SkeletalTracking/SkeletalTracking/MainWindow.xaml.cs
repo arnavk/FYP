@@ -155,7 +155,7 @@ namespace SkeletalTracking
             leftArm.Visibility = Visibility.Hidden;
 
             kinectSensorChooser1.KinectSensorChanged += new DependencyPropertyChangedEventHandler(kinectSensorChooser1_KinectSensorChanged);
-
+            clothImage.Visibility = Visibility.Hidden;
             inkCanvas.Visibility = Visibility.Hidden;
             currentColor = Colors.CadetBlue;
             isPainting = false;
@@ -338,7 +338,7 @@ namespace SkeletalTracking
 
 
 
-                Console.WriteLine("Width yo: " + colorFrame.Width);
+                //Console.WriteLine("Width yo: " + colorFrame.Width);
                 // do the calcuation magic
                 calculateMappingMatrix();
                 calibrating = false;
@@ -416,7 +416,7 @@ namespace SkeletalTracking
             //flipTrans.ScaleX = -1;
             ////flipTrans.ScaleY = -1;
             //imageTest.RenderTransform = flipTrans;
-
+            
             saveImage(imageTest, "difference");
             //flipImage();
 
@@ -472,7 +472,7 @@ namespace SkeletalTracking
                 r = i / size;
                 c = i % size;
                 //c = size - 2 - c;
-                Console.WriteLine("(" + corners[i].X + ", " + corners[i].Y + ")");
+                //Console.WriteLine("(" + corners[i].X + ", " + corners[i].Y + ")");
                 if (r != size - 1 && c != size - 1)
                 {
                     wallSquares[r, c].startX = corners[i].X;
@@ -513,7 +513,7 @@ namespace SkeletalTracking
                 {
                     System.Windows.Point p1 = new System.Windows.Point(j, i);
                     System.Windows.Point p2 = convertToScreenPoint(p1);
-                    Console.WriteLine("(" + p1.X + ", " + p1.Y + ")\t-- >\t(" + p2.X + ", " + p2.Y + ")");
+                    //Console.WriteLine("(" + p1.X + ", " + p1.Y + ")\t-- >\t(" + p2.X + ", " + p2.Y + ")");
                     Canvas.SetLeft(leftEllipse, p2.X);
                     Canvas.SetTop(leftEllipse, p2.Y);
                 }
@@ -530,10 +530,15 @@ namespace SkeletalTracking
             i.RotateFlip(RotateFlipType.RotateNoneFlipX);
             i.Save("difference2.png");
         }
+
+        private System.Windows.Point convertKinectPointToScreenPoint(System.Windows.Point wallPoint)
+        {
+            return convertToScreenPoint(new System.Windows.Point(640 - wallPoint.X, wallPoint.Y));
+        }
+
         private System.Windows.Point convertToScreenPoint(System.Windows.Point wallPoint)
         {
             int i, j;
-            Console.WriteLine("YOLO");
             System.Windows.Point screenPoint = new System.Windows.Point(0, 0);
             for (i = 0; i < gridSize - 2; i++)
             {
@@ -546,13 +551,13 @@ namespace SkeletalTracking
                         screenPoint.X = (px * MainCanvas.ActualWidth / gridSize) + Canvas.GetLeft(grid[i + 1, j + 1]);
                         screenPoint.Y = (py * MainCanvas.ActualHeight/ gridSize) + Canvas.GetTop(grid[i + 1, j + 1]);
 
-                        if (px > 1)
-                        {
-                            Console.WriteLine("Start :\t(" + wallSquares[i, j].startX + ", " + wallSquares[i, j].startY + ")");
-                            Console.WriteLine("End : \t(" + wallSquares[i, j].endX + ", " + wallSquares[i, j].endY + ")");
-                            Console.WriteLine("Point :\t(" + wallPoint.X + ", " + wallPoint.Y + ")");
-                            Console.WriteLine( px + " = " + (wallPoint.X - wallSquares[i, j].startX) + "/" + (wallSquares[i, j].endY - wallSquares[i, j].startY));
-                        }
+                        //if (px > 1)
+                        //{
+                        //    Console.WriteLine("Start :\t(" + wallSquares[i, j].startX + ", " + wallSquares[i, j].startY + ")");
+                        //    Console.WriteLine("End : \t(" + wallSquares[i, j].endX + ", " + wallSquares[i, j].endY + ")");
+                        //    Console.WriteLine("Point :\t(" + wallPoint.X + ", " + wallPoint.Y + ")");
+                        //    Console.WriteLine( px + " = " + (wallPoint.X - wallSquares[i, j].startX) + "/" + (wallSquares[i, j].endY - wallSquares[i, j].startY));
+                        //}
 
                         
 
@@ -562,7 +567,7 @@ namespace SkeletalTracking
                     }
                 }
             }
-            Console.WriteLine("yolo"+screenPoint.ToString());
+            //Console.WriteLine("Screen Point: "+screenPoint.ToString());
             return screenPoint;
         }
         private void saveImage(byte[] array, String name)
@@ -588,7 +593,7 @@ namespace SkeletalTracking
 
             using (DepthImageFrame depth = e.OpenDepthImageFrame())
             {
-                Console.WriteLine("Loggin, yo!");
+                //Console.WriteLine("Loggin, yo!");
                 if (depth == null ||
                     kinectSensorChooser1.Kinect == null)
                 {
@@ -606,6 +611,11 @@ namespace SkeletalTracking
                 //left elbow
                 DepthImagePoint leftElbowDepthPoint =
                     depth.MapFromSkeletonPoint(first.Joints[JointType.ElbowLeft].Position);
+                
+                //left shoulder
+                DepthImagePoint leftShoulderDepthPoint =
+                    depth.MapFromSkeletonPoint(first.Joints[JointType.ShoulderLeft].Position);
+                
                 //right hand
                 DepthImagePoint rightHandDepthPoint =
                     depth.MapFromSkeletonPoint(first.Joints[JointType.HandRight].Position);
@@ -615,6 +625,20 @@ namespace SkeletalTracking
                 //right shoulder
                 DepthImagePoint rightShoulderDepthPoint =
                     depth.MapFromSkeletonPoint(first.Joints[JointType.ShoulderRight].Position);
+
+                //right hip
+                DepthImagePoint rightHipDepthPoint =
+                    depth.MapFromSkeletonPoint(first.Joints[JointType.HipRight].Position);
+
+                //right hip
+                DepthImagePoint leftHipDepthPoint =
+                    depth.MapFromSkeletonPoint(first.Joints[JointType.HipLeft].Position);
+
+                //mid shoulder
+                DepthImagePoint midShoulderDepthPoint =
+                    depth.MapFromSkeletonPoint(first.Joints[JointType.ShoulderCenter].Position);
+
+                
 
 
                 //Map a depth point to a point on the color image
@@ -630,18 +654,39 @@ namespace SkeletalTracking
                 ColorImagePoint leftElbowColorPoint =
                     depth.MapToColorImagePoint(leftElbowDepthPoint.X, leftElbowDepthPoint.Y,
                     ColorImageFormat.RgbResolution640x480Fps30);
+
+                //left shoulder
+                ColorImagePoint leftShoulderColorPoint =
+                    depth.MapToColorImagePoint(leftShoulderDepthPoint.X, leftShoulderDepthPoint.Y,
+                    ColorImageFormat.RgbResolution640x480Fps30);
+
                 //right hand
                 ColorImagePoint rightHandColorPoint =
                     depth.MapToColorImagePoint(rightHandDepthPoint.X, rightHandDepthPoint.Y,
                     ColorImageFormat.RgbResolution640x480Fps30);
+                
                 //right elbow
                 ColorImagePoint rightElbowColorPoint =
                     depth.MapToColorImagePoint(rightElbowDepthPoint.X, rightElbowDepthPoint.Y,
                     ColorImageFormat.RgbResolution640x480Fps30);
+                
                 //right shoulder
                 ColorImagePoint rightShoulderColorPoint =
                     depth.MapToColorImagePoint(rightShoulderDepthPoint.X, rightShoulderDepthPoint.Y,
                     ColorImageFormat.RgbResolution640x480Fps30);
+
+
+                ColorImagePoint rightHipColorPoint =
+                    depth.MapToColorImagePoint(rightHipDepthPoint.X, rightHipDepthPoint.Y,
+                    ColorImageFormat.RgbResolution640x480Fps30);
+
+                ColorImagePoint leftHipColorPoint =
+                    depth.MapToColorImagePoint(leftHipDepthPoint.X, leftHipDepthPoint.Y,
+                    ColorImageFormat.RgbResolution640x480Fps30);
+
+                ColorImagePoint midShoulderColorPoint=
+                   depth.MapToColorImagePoint(midShoulderDepthPoint.X, midShoulderDepthPoint.Y,
+                   ColorImageFormat.RgbResolution640x480Fps30);
 
 
                 //Set location
@@ -653,10 +698,9 @@ namespace SkeletalTracking
                 CameraPosition(centerEllipse, rightShoulderColorPoint);
 
                 Paint(convertToScreenPoint(new System.Windows.Point (640 - rightHandColorPoint.X, rightHandColorPoint.Y)));
+                showClothing(rightShoulderColorPoint, headColorPoint, leftShoulderColorPoint);
             }        
         }
-
-        
 
 
         Skeleton GetFirstSkeleton(AllFramesReadyEventArgs e)
@@ -869,5 +913,29 @@ namespace SkeletalTracking
             inkCanvas.Children.Add(line);
         }
 
+        private void showClothing(ColorImagePoint rightShoulder, ColorImagePoint midShoulder, ColorImagePoint leftShoulder)
+        {
+            clothImage.Source = new BitmapImage(new Uri(@"shirt.png", UriKind.Relative));
+            System.Windows.Point right = convertKinectPointToScreenPoint(new System.Windows.Point(rightShoulder.X, rightShoulder.Y));
+            System.Windows.Point mid = convertKinectPointToScreenPoint(new System.Windows.Point(midShoulder.X, midShoulder.Y));
+            System.Windows.Point left = convertKinectPointToScreenPoint(new System.Windows.Point(leftShoulder.X, leftShoulder.Y));
+            if ((right.X == 0 && right.Y == 0) || (right.X == 0 && right.Y == 0))
+            {
+                clothImage.Visibility = Visibility.Hidden;
+                Console.WriteLine("No image");
+                return;
+            }
+            clothImage.Visibility = Visibility.Visible;
+            clothImage.Width = Math.Abs(right.X - left.X) * 1.5;
+            clothImage.Height = clothImage.Width * 1.4;
+            Canvas.SetLeft(clothImage, (right.X + left.X)/2.0 - (clothImage.Width/2.0));//Math.Min(right.X, left.X) - clothImage.Width * 0.25);
+            if (mid.Y == 0)
+            {
+                Canvas.SetTop(clothImage, right.Y - clothImage.Height * 0.2); // replace with shoulder centre
+                clothImage.Visibility = Visibility.Hidden;
+            }
+            else
+                Canvas.SetTop(clothImage, mid.Y);//(mid.Y + right.Y)/2.0); 
+        }
     }
 }

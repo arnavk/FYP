@@ -14,6 +14,7 @@
         <Ellipse Canvas.Left="404" Canvas.Top="122" Height="50" x:Name="centerEllipse"  Width="50" Fill="#FA4DAA8D" Opacity="1" Stroke="White" />
         <Ellipse Canvas.Left="100" Canvas.Top="0" Fill="#FF2CACE3" Height="50" x:Name="rightEllipse" Width="50" Opacity="1" Stroke="White" />
         <Ellipse Canvas.Left="223" Canvas.Top="86" Height="50" x:Name="leftEllipse"  Width="50" Fill="#FF4D298D" Opacity="1" Stroke="White" />
+        <Image x:Name="clothImage" Height="100" Canvas.Left="616" Canvas.Top="418" Width="100" />
 
     </Canvas>
 </Window>
