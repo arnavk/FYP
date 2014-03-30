@@ -80,6 +80,9 @@ namespace SkeletalTracking
         Boolean isPainting;
         Boolean initialized;
 
+        enum Mode {None, Paint, Apparel};
+        Mode applicationMode;
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             //screenMap = new double [(int) Math.Ceiling(MainCanvas.Height), (int) Math.Ceiling(MainCanvas.Width)];
@@ -160,6 +163,9 @@ namespace SkeletalTracking
             currentColor = Colors.CadetBlue;
             isPainting = false;
             initialized = false;
+
+            applicationMode = Mode.None;
+
             TCPServer = new Server();
             TCPServer.ServerEvent += TCPServer_ServerEvent;
 
@@ -168,10 +174,36 @@ namespace SkeletalTracking
         void TCPServer_ServerEvent(string s)
         {
             //MessageBox.Show(s);
-            Console.WriteLine(s);
-            if (s.StartsWith("/stop"))
+            //Console.WriteLine(s);
+            if (s.StartsWith("/paint_start/"))
+            {
+                applicationMode = Mode.Paint;
+                //inkCanvas.Visibility = Visibility.Visible;
+                Console.WriteLine("Paint mode");
+            }
+            else if (s.StartsWith("/paint_stop/"))
+            {
+                applicationMode = Mode.None;
+                //inkCanvas.Visibility = Visibility.Hidden;
+                Console.WriteLine("Paint mode stop");
+            }
+            else if (s.StartsWith("/apparel_start/"))
+            {
+                applicationMode = Mode.Apparel;
+                //clothImage.Visibility = Visibility.Visible;
+                Console.WriteLine("Appparel mode");
+            }
+            else if (s.StartsWith("/apparel_stop/"))
+            {
+                applicationMode = Mode.Apparel;
+                //clothImage.Visibility = Visibility.Hidden;
+                Console.WriteLine("Apparel Mode stop");
+            }
+            else if (s.StartsWith("/stop"))
+            {
                 isPainting = false;
-            else
+            }
+            else if (s.StartsWith("/start/"))
             {
                 string colorHex = "#" + s.Substring(7);
                 Console.WriteLine("YOLO " + colorHex);
@@ -179,9 +211,30 @@ namespace SkeletalTracking
                 System.Drawing.Color c = System.Drawing.ColorTranslator.FromHtml(colorHex);
                 currentColor = System.Windows.Media.Color.FromArgb(c.A, c.R, c.G, c.B);
             }
+            else if (s.StartsWith("/choose/"))
+            {
+
+            }
 
         }
-
+        void udpateApplicationState ()
+        {
+            if (applicationMode == Mode.Apparel)
+            {
+                clothImage.Visibility = Visibility.Visible;
+                inkCanvas.Visibility = Visibility.Hidden;
+            }
+            else if (applicationMode == Mode.Paint)
+            {
+                clothImage.Visibility = Visibility.Hidden;
+                inkCanvas.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                clothImage.Visibility = Visibility.Hidden;
+                inkCanvas.Visibility = Visibility.Hidden;
+            }
+        }
         void kinectSensorChooser1_KinectSensorChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             KinectSensor old = (KinectSensor)e.OldValue;
@@ -241,6 +294,7 @@ namespace SkeletalTracking
                 return;
             }
 
+            udpateApplicationState();
 
             //Get a skeleton
             Skeleton first =  GetFirstSkeleton(e);
@@ -250,7 +304,7 @@ namespace SkeletalTracking
                 return; 
             }
 
-
+            
 
             //set scaled position
             //ScalePosition(headImage, first.Joints[JointType.Head]);
@@ -518,11 +572,7 @@ namespace SkeletalTracking
                     Canvas.SetTop(leftEllipse, p2.Y);
                 }
             }
-
-            
-
-
-            
+    
         }
         private void flipImage()
         {
@@ -878,6 +928,8 @@ namespace SkeletalTracking
 
         public void Paint(System.Windows.Point nextPoint)
         {
+            if (applicationMode != Mode.Paint)
+                return;
             if (nextPoint.X == 0 && nextPoint.Y == 0)
             {
                 initialized = false;
@@ -915,6 +967,8 @@ namespace SkeletalTracking
 
         private void showClothing(ColorImagePoint rightShoulder, ColorImagePoint midShoulder, ColorImagePoint leftShoulder)
         {
+            if (applicationMode != Mode.Apparel)
+                return;
             clothImage.Source = new BitmapImage(new Uri(@"shirt.png", UriKind.Relative));
             System.Windows.Point right = convertKinectPointToScreenPoint(new System.Windows.Point(rightShoulder.X, rightShoulder.Y));
             System.Windows.Point mid = convertKinectPointToScreenPoint(new System.Windows.Point(midShoulder.X, midShoulder.Y));
