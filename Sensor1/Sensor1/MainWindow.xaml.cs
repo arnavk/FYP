@@ -31,17 +31,21 @@ namespace SkeletalTracking
         bool closing = false;
         const int skeletonCount = 6;
         Skeleton[] allSkeletons = new Skeleton[skeletonCount];
-        
+        double left = 0;//left of the rectangle
+        double top = 0;//top of the rectangle
+        double width;//width of the rectangle
+        double height;//height of the rectangle
         public MainWindow()
         {
             InitializeComponent();
-            
+            width = MainCanvas.ActualWidth;
+            height = MainCanvas.ActualHeight;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            TCPServer = new Server();
-            TCPServer.ServerEvent += TCPServer_ServerEvent;
+            //TCPServer = new Server();
+            //TCPServer.ServerEvent += TCPServer_ServerEvent;
 
             kinectSensorChooser1.KinectSensorChanged += new DependencyPropertyChangedEventHandler(kinectSensorChooser1_KinectSensorChanged);
         }
@@ -60,12 +64,12 @@ namespace SkeletalTracking
             StopKinect(old);
 
             KinectSensor sensor = (KinectSensor)e.NewValue;
-
+            
             if (sensor == null)
             {
                 return;
             }
-
+            
 
 
 
@@ -88,6 +92,7 @@ namespace SkeletalTracking
             try
             {
                 sensor.Start();
+                sensor.ElevationAngle = 5;
             }
             catch (System.IO.IOException)
             {
@@ -161,7 +166,7 @@ namespace SkeletalTracking
 
 
                 //Set location
-                CameraPosition(headImage, headColorPoint);
+                //CameraPosition(headImage, headColorPoint);
                 CameraPosition(leftEllipse, leftColorPoint);
                 CameraPosition(rightEllipse, rightColorPoint);
             }
@@ -204,8 +209,6 @@ namespace SkeletalTracking
                     {
                         sensor.AudioSource.Stop();
                     }
-
-
                 }
             }
         }
@@ -214,8 +217,28 @@ namespace SkeletalTracking
         {
             //Divide by 2 for width and height so point is right in the middle 
             // instead of in top/left corner
-            Canvas.SetLeft(element, point.X - element.Width / 2);
-            Canvas.SetTop(element, point.Y - element.Height / 2);
+
+            double newLeft = MainCanvas.ActualWidth - point.X;
+            //newLeft = point.X;
+            double scalev = MainCanvas.ActualHeight / height;
+            double scaleh = MainCanvas.ActualWidth / width;
+
+            double x = (newLeft - left)*scaleh;
+            double y = (point.Y - top) *scalev;// - top) * scalev;
+            
+            Canvas.SetLeft(element, x);// - element.Width / 2);
+            Canvas.SetTop(element, y);// - element.Height / 2);
+
+            if (x < left || x  > left + width || y < top || y > top + height)
+            {
+                //element.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                element.Visibility = Visibility.Visible;
+            }
+
+            
 
         }
 
@@ -225,11 +248,10 @@ namespace SkeletalTracking
             //Joint scaledJoint = joint.ScaleTo(1280, 720); 
 
             //convert & scale (.3 = means 1/3 of joint distance)
-            Joint scaledJoint = joint.ScaleTo(1280, 720, .3f, .3f);
-
+            //Joint scaledJoint = joint.ScaleTo(1280, 720, .3f, .3f);
+            Joint scaledJoint = joint.ScaleTo((int)MainCanvas.ActualWidth, (int)MainCanvas.ActualHeight);
             Canvas.SetLeft(element, scaledJoint.Position.X);
             Canvas.SetTop(element, scaledJoint.Position.Y);
-
         }
 
 
@@ -241,8 +263,6 @@ namespace SkeletalTracking
 
         private void changeColor(Color s)
         {
-            
-
             if (this.Dispatcher.Thread != System.Threading.Thread.CurrentThread)
             {
                 this.Dispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Normal,
@@ -255,6 +275,31 @@ namespace SkeletalTracking
                         }
                         ));
             }
+        }
+
+        private void AdjustColorViewer(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            left = HorizontalStartSlider.Value * 0.01 * MainCanvas.ActualWidth;
+            width = (HorizontalEndSlider.Value - HorizontalStartSlider.Value) * 0.01 * MainCanvas.ActualWidth;
+            Canvas.SetLeft(positioningRectangle, left);
+            positioningRectangle.Width = width;
+
+            if (VerticalStartSlider == null || VerticalEndSlider == null)
+                return;
+            top = (100 - VerticalEndSlider.Value) * 0.01 * MainCanvas.ActualHeight;
+            height = (VerticalEndSlider.Value - VerticalStartSlider.Value) * 0.01 * MainCanvas.ActualHeight;
+            //top = VerticalStartSlider.Value * 0.01 * MainCanvas.ActualHeight;
+            //height = (VerticalStartSlider.Value - VerticalStartSlider.Value) * 0.01 * MainCanvas.ActualHeight;
+            Canvas.SetTop(positioningRectangle, top);
+            positioningRectangle.Height = height;
+        }
+
+        private void ToggleColorView(object sender, MouseButtonEventArgs e)
+        {
+            if (colorViewer.Visibility == Visibility.Hidden)
+                colorViewer.Visibility = Visibility.Visible;
+            else
+                colorViewer.Visibility = Visibility.Hidden;
         }
     }
 }

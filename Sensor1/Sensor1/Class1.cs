@@ -16,14 +16,14 @@ namespace Sensor1
 
         public Server()
         {
-            this.tcpListener = new TcpListener(System.Net.IPAddress.Parse("10.0.1.3"), 500);//new TcpListener(IPAddress.Any, 3200);
+            this.tcpListener = new TcpListener(System.Net.IPAddress.Parse("172.22.147.91"), 8000);//new TcpListener(IPAddress.Any, 3200);
             this.listenThread = new Thread(new ThreadStart(ListenForClients));
             this.listenThread.Start();
         }
 
         private void ListenForClients()
         {
-            this.tcpListener.Start();
+            //this.tcpListener.Start();
 
             while (true)
             {

@@ -3,12 +3,21 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="600" Width="800" Loaded="Window_Loaded" 
         xmlns:my="clr-namespace:Microsoft.Samples.Kinect.WpfViewers;assembly=Microsoft.Samples.Kinect.WpfViewers" 
-        Closing="Window_Closing" WindowState="Maximized">
+        Closing="Window_Closing">
     <Canvas Name="MainCanvas">
-        
-        <Ellipse Canvas.Left="0" Canvas.Top="0" Height="30" Name="leftEllipse"  Width="30" Fill="#FF4D298D" Opacity="1" Stroke="White" />
-        <Ellipse Canvas.Left="100" Canvas.Top="0" Fill="#FF2CACE3" Height="30" Name="rightEllipse" Width="30" Opacity="1" Stroke="White" />
-        <my:KinectSensorChooser Canvas.Left="250" Canvas.Top="380" Name="kinectSensorChooser1" Width="328" />
-        <Image Canvas.Left="66" Canvas.Top="90" Height="87" Name="headImage" Stretch="Fill" Width="112" Source="head.jpg" />
+
+        <my:KinectColorViewer x:Name="colorViewer" Height="550" Canvas.Left="10" Canvas.Top="10" Width="733" Kinect="{Binding Kinect, ElementName=kinectSensorChooser1}" Visibility="Visible"/>
+        <Ellipse Canvas.Left="31" Canvas.Top="123" Height="30" Name="leftEllipse"  Width="30" Fill="#FF4D298D" Opacity="1" Stroke="White" />
+        <Ellipse Canvas.Left="734" Canvas.Top="52" Fill="#FF2CACE3" Height="30" Name="rightEllipse" Width="30" Opacity="1" Stroke="White" />
+        <my:KinectSensorChooser Canvas.Left="250" Canvas.Top="180" Name="kinectSensorChooser1" Width="328" />
+        <Image Canvas.Left="66" Canvas.Top="90" Height="87" Name="headImage" Stretch="Fill" Visibility="Hidden" Width="112" Source="head.jpg" />
+        <Rectangle x:Name="positioningRectangle" Height="480" Canvas.Left="61" Stroke="Black" Width="627" Canvas.Top="66"/>
+        <Slider x:Name="HorizontalStartSlider" Width="782" Maximum="100" ValueChanged="AdjustColorViewer"/>
+        <Slider x:Name="HorizontalEndSlider" Width="774" Canvas.Top="22" Maximum="100" Value="99.9" ValueChanged="AdjustColorViewer"/>
+        <Slider x:Name="VerticalStartSlider" Width="26" Canvas.Top="43" Maximum="100" Value="40" ValueChanged="AdjustColorViewer" Orientation="Vertical" Height="527"/>
+        <Slider x:Name="VerticalEndSlider" Width="26" Canvas.Top="43" Maximum="100" Value="99.9" ValueChanged="AdjustColorViewer" Orientation="Vertical" Height="527" Canvas.Left="24"/>
+        <Button x:Name="ColorViewToggleButton" Content="Toggle" Canvas.Left="50" Canvas.Top="39" Width="75"  MouseDoubleClick="ToggleColorView"/>
+
+
     </Canvas>
 </Window>
