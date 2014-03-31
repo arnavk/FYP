@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		1511961418E94EB500BC13E2 /* ConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1511961318E94EB500BC13E2 /* ConnectionManager.m */; };
+		1511961A18E9676A00BC13E2 /* CircularButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 1511961918E9676A00BC13E2 /* CircularButton.m */; };
+		1511961C18E968FF00BC13E2 /* brush.png in Resources */ = {isa = PBXBuildFile; fileRef = 1511961B18E968FF00BC13E2 /* brush.png */; };
+		1511961E18E972B200BC13E2 /* brush-inverted.png in Resources */ = {isa = PBXBuildFile; fileRef = 1511961D18E972B200BC13E2 /* brush-inverted.png */; };
 		1532BD2C18A2421400990F48 /* ESCGradientSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 1532BD2718A2421400990F48 /* ESCGradientSlider.m */; };
 		1532BD2D18A2421400990F48 /* ESCHueWheel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1532BD2918A2421400990F48 /* ESCHueWheel.m */; };
 		1532BD2E18A2421400990F48 /* ESCColorControlThumb.m in Sources */ = {isa = PBXBuildFile; fileRef = 1532BD2B18A2421400990F48 /* ESCColorControlThumb.m */; };
@@ -56,6 +59,10 @@
 /* Begin PBXFileReference section */
 		1511961218E94EB500BC13E2 /* ConnectionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionManager.h; sourceTree = "<group>"; };
 		1511961318E94EB500BC13E2 /* ConnectionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectionManager.m; sourceTree = "<group>"; };
+		1511961818E9676A00BC13E2 /* CircularButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircularButton.h; sourceTree = "<group>"; };
+		1511961918E9676A00BC13E2 /* CircularButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircularButton.m; sourceTree = "<group>"; };
+		1511961B18E968FF00BC13E2 /* brush.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = brush.png; sourceTree = "<group>"; };
+		1511961D18E972B200BC13E2 /* brush-inverted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "brush-inverted.png"; sourceTree = "<group>"; };
 		1532BD2618A2421400990F48 /* ESCGradientSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESCGradientSlider.h; sourceTree = "<group>"; };
 		1532BD2718A2421400990F48 /* ESCGradientSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ESCGradientSlider.m; sourceTree = "<group>"; };
 		1532BD2818A2421400990F48 /* ESCHueWheel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESCHueWheel.h; sourceTree = "<group>"; };
@@ -236,6 +243,8 @@
 				1532BD4D18A243D100990F48 /* ColorPickerComponents */,
 				15CFC925180D39AD00888F11 /* AppDelegate.h */,
 				15CFC926180D39AD00888F11 /* AppDelegate.m */,
+				1511961B18E968FF00BC13E2 /* brush.png */,
+				1511961D18E972B200BC13E2 /* brush-inverted.png */,
 				157B838E18DD7C7C00A4AC15 /* 1.png */,
 				15CFC94B180D39EA00888F11 /* NSStream+Additions.h */,
 				15CFC94C180D39EA00888F11 /* NSStream+Additions.m */,
@@ -250,6 +259,8 @@
 				15CFC91D180D39AD00888F11 /* Supporting Files */,
 				1511961218E94EB500BC13E2 /* ConnectionManager.h */,
 				1511961318E94EB500BC13E2 /* ConnectionManager.m */,
+				1511961818E9676A00BC13E2 /* CircularButton.h */,
+				1511961918E9676A00BC13E2 /* CircularButton.m */,
 			);
 			path = "iPod+Kinect";
 			sourceTree = "<group>";
@@ -364,9 +375,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				15CFC92F180D39AD00888F11 /* Images.xcassets in Resources */,
+				1511961E18E972B200BC13E2 /* brush-inverted.png in Resources */,
 				15CFC921180D39AD00888F11 /* InfoPlist.strings in Resources */,
 				157B838F18DD7C7C00A4AC15 /* 1.png in Resources */,
 				15CFC92A180D39AD00888F11 /* Main.storyboard in Resources */,
+				1511961C18E968FF00BC13E2 /* brush.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -391,6 +404,7 @@
 				1511961418E94EB500BC13E2 /* ConnectionManager.m in Sources */,
 				157BF20918D4596D002C848D /* UIColor+FlatUI.m in Sources */,
 				1532BD3418A2423A00990F48 /* ESCColorPickerView.m in Sources */,
+				1511961A18E9676A00BC13E2 /* CircularButton.m in Sources */,
 				1532BD8E18A3F7A000990F48 /* AKTextField.m in Sources */,
 				157BF20718D4596D002C848D /* TTCardView.m in Sources */,
 				15CFC927180D39AD00888F11 /* AppDelegate.m in Sources */,

@@ -11,41 +11,23 @@
 #import "ESCColorPickerModel.h"
 #import "ESCColorPickerPresenter.h"
 #import "ConnectionManager.h"
+#import "CircularButton.h"
 
 @interface FYPPaletteViewController ()<ColorPickerDelegate>
 
 @property ESCColorPickerPresenter *presenter;
 
 @property (nonatomic, strong) NSString *color;
-//@property (nonatomic, strong) NSString *serverIP;
-//@property (nonatomic, strong) NSString *serverPort;
-//
-//@property (nonatomic, strong) NSMutableData *data;
-//@property (nonatomic, strong) NSInputStream *iStream;
-//@property (nonatomic, strong) NSOutputStream *oStream;
 
 @end
 
 @implementation FYPPaletteViewController
 
-//CFReadStreamRef readStream = NULL;
-//CFWriteStreamRef writeStream = NULL;
-
-//- (void) setServerIP:(NSString *)serverIP
-//{
-//    _serverIP = serverIP;
-//}
-//
-//- (void) setServerPort:(NSString *)serverPort
-//{
-//    _serverPort = serverPort;
-//}
 
 - (void) viewDidLoad
 {
     [super viewDidLoad];
     
-//    [self connectToServerUsingCFStream:self.serverIP portNo:[self.serverPort intValue]];
     
     self.view.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
 	
@@ -64,6 +46,22 @@
     self.color = @"92DB36";
     
     
+//    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+//
+//    [button addTarget:self action:@selector(buttonReleased) forControlEvents:UIControlEventTouchUpInside];
+//    [button addTarget:self action:@selector(buttonHeld) forControlEvents:UIControlEventTouchDown];
+//    
+//    [button setTitle:@"YOLO" forState:UIControlStateNormal];
+//    button.frame = CGRectMake(140.0, 280.0, 40.0, 40.0);//width and height should be same value
+//    button.clipsToBounds = YES;
+//    
+//    button.layer.cornerRadius = 20;//half of the width
+//    button.layer.borderColor=[UIColor redColor].CGColor;
+//    button.layer.borderWidth=2.0f;
+    
+    
+    
+    
     [[ConnectionManager sharedManager] sendMessage:[NSString stringWithFormat:@"/paint_start/"]];
 }
 
@@ -71,6 +69,16 @@
 {
     self.color = rgbHex;
     NSLog(@"%@", self.color);
+}
+
+- (void) buttonHeld
+{
+    [[ConnectionManager sharedManager] sendMessage:[NSString stringWithFormat:@"/start/%@", self.color]];
+}
+
+- (void) buttonReleased
+{
+    [[ConnectionManager sharedManager] sendMessage:@"/stop"];    
 }
 
 - (void) stateChangedTo:(BOOL)state
@@ -82,110 +90,24 @@
         [[ConnectionManager sharedManager] sendMessage:@"/stop"];
 }
 
-//- (void) sendMessage:(NSString *)message
-//{
-//    const uint8_t *str = (uint8_t *) [message cStringUsingEncoding:NSASCIIStringEncoding];
-//    [self writeToServer:str];
-//}
+- (BOOL)canBecomeFirstResponder
+{
+    return YES;
+}
 
-//- (void) writeToServer:(const uint8_t *) buf {
-//    [self.oStream write:buf maxLength:strlen((char*)buf)];
-//}
-//
-//-(void) connectToServerUsingCFStream:(NSString *) urlStr portNo: (uint) portNo {
-//    
-//    CFStreamCreatePairWithSocketToHost(kCFAllocatorDefault,
-//                                       (__bridge CFStringRef) urlStr,
-//                                       portNo,
-//                                       &readStream,
-//                                       &writeStream);
-//    
-//    if (readStream && writeStream) {
-//        CFReadStreamSetProperty(readStream,
-//                                kCFStreamPropertyShouldCloseNativeSocket,
-//                                kCFBooleanTrue);
-//        CFWriteStreamSetProperty(writeStream,
-//                                 kCFStreamPropertyShouldCloseNativeSocket,
-//                                 kCFBooleanTrue);
-//        
-//        self.iStream = (__bridge NSInputStream *)readStream;
-//        [self.iStream setDelegate:self];
-//        [self.iStream scheduleInRunLoop:[NSRunLoop currentRunLoop]
-//                                forMode:NSDefaultRunLoopMode];
-//        [self.iStream open];
-//        
-//        self.oStream = (__bridge NSOutputStream *)writeStream;
-//        [self.oStream setDelegate:self];
-//        [self.oStream scheduleInRunLoop:[NSRunLoop currentRunLoop]
-//                                forMode:NSDefaultRunLoopMode];
-//        [self.oStream open];
-//    }
-//}
-//
-//- (void)stream:(NSStream *)stream handleEvent:(NSStreamEvent)eventCode {
-//    
-//    switch(eventCode) {
-//        case NSStreamEventHasBytesAvailable:
-//        {
-//            if (self.data == nil) {
-//                self.data = [[NSMutableData alloc] init];
-//            }
-//            uint8_t buf[1024];
-//            unsigned long len = 0;
-//            len = [(NSInputStream *)stream read:buf maxLength:1024];
-//            if(len) {
-//                [self.data appendBytes:(const void *)buf length:len];
-//                int bytesRead = 0;
-//                bytesRead += len;
-//            } else {
-//                NSLog(@"No data.");
-//            }
-//            
-//            NSString *str = [[NSString alloc] initWithData:self.data
-//                                                  encoding:NSUTF8StringEncoding];
-//            NSLog(@"%@", str);
-//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"From server"
-//                                                            message:str
-//                                                           delegate:self
-//                                                  cancelButtonTitle:@"OK"
-//                                                  otherButtonTitles:nil];
-//            [alert show];
-//            self.data = nil;
-//            break;
-//        }
-//        case NSStreamEventOpenCompleted:
-//			NSLog(@"Stream opened");
-//			break;
-//        case NSStreamEventErrorOccurred:
-//			
-//			NSLog(@"Can not connect to the host!");
-//			break;
-//			
-//		case NSStreamEventEndEncountered:
-//            
-//            [self disconnect];
-//			
-//			break;
-//		default:
-//			NSLog(@"Unknown event");
-//    }
-//}
-//
-//-(void) disconnect {
-//    [self.iStream close];
-//    [self.oStream close];
-//}
-//
-//- (void) dealloc {
-//    [self disconnect];
-//    if (readStream) CFRelease(readStream);
-//    if (writeStream) CFRelease(writeStream);
-//}
+- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event
+{
+    if (motion == UIEventSubtypeMotionShake)
+    {
+        NSLog(@"Shake");
+        [[ConnectionManager sharedManager] sendMessage:@"/clean_canvas/"];
+    } 
+}
 
-- (void) viewWillDisappear:(BOOL)animated
+
+- (void) viewDidDisappear:(BOOL)animated
 {
     [[ConnectionManager sharedManager] sendMessage:[NSString stringWithFormat:@"/paint_stop/"]];
-//    [self disconnect];
 }
 
 @end

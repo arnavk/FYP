@@ -2,6 +2,7 @@
 #import "ESCGradientSlider.h"
 #import "ESCHueWheel.h"
 #import <QuartzCore/QuartzCore.h>
+#import "CircularButton.h"
 //#import "FlatUIKit.h"
 
 #define PADDING 15.0
@@ -13,8 +14,9 @@
 @property (nonatomic) ESCGradientSlider *brightnessSlider;
 @property (nonatomic) UILabel *colorLabel;
 @property (nonatomic) UITapGestureRecognizer *tapGestureRecognizer;
-//@property (nonatomic, strong) FUIButton *paintButton;
-@property (nonatomic, strong) UISwitch *paintSwitch;
+@property (nonatomic, strong) CircularButton *paintButton;
+//@property (nonatomic, strong) UISwitch *paintSwitch;
+
 
 @end
 
@@ -47,22 +49,28 @@
 		[self.colorLabel addGestureRecognizer:self.tapGestureRecognizer];
 		[self addSubview:self.colorLabel];
         
-        self.paintSwitch = [[UISwitch alloc] init];
-//        self.paintSwitch.onColor = [UIColor turquoiseColor];
-//        self.paintSwitch.offColor = [UIColor cloudsColor];
-//        self.paintSwitch.onBackgroundColor = [UIColor midnightBlueColor];
-////        self.paintSwitch.offBackgroundColor = [UIColor silverColor];
-//        self.paintSwitch.offLabel.font = [UIFont boldFlatFontOfSize:14];
-//        self.paintSwitch.onLabel.font = [UIFont boldFlatFontOfSize:14];
-        [self addSubview:self.paintSwitch];
-        self.paintSwitch.layer.cornerRadius = 16.0;
-        [self.paintSwitch setTintColor:[UIColor whiteColor]];
-        [self.paintSwitch setOnTintColor:[UIColor greenColor]];
-        self.paintSwitch.backgroundColor = [UIColor redColor];
-        [self.paintSwitch addTarget:self action:@selector(switchStateChanged) forControlEvents:UIControlEventAllTouchEvents];
+        self.paintButton = [[CircularButton alloc] initWithFrame:CGRectMake(130.0, 280.0, 60.0, 60.0)];
+        [self.paintButton setTitle:@"YOLO" forState:UIControlStateNormal];
+        [self.paintButton setImage:[UIImage imageNamed:@"brush.png"] forState:UIControlStateNormal];
+        [self.paintButton setImage:[UIImage imageNamed:@"brush-inverted.png"] forState:UIControlStateHighlighted];
+        [self addSubview:self.paintButton];
+        [self.paintButton addTarget:self action:@selector(buttonReleased) forControlEvents:UIControlEventTouchUpInside];
+        [self.paintButton addTarget:self action:@selector(buttonHeld) forControlEvents:UIControlEventTouchDown];
         
     }
     return self;
+}
+
+- (void) buttonHeld
+{
+    self.paintButton.backgroundColor = [UIColor blackColor];
+    [self.escNotifier switchStateDidChange:YES];
+}
+
+- (void) buttonReleased
+{
+    self.paintButton.backgroundColor = [UIColor clearColor];
+    [self.escNotifier switchStateDidChange:NO];
 }
 
 - (void)colorLabelTapped:(UITapGestureRecognizer *)gestureRecognizer {
@@ -138,16 +146,17 @@
 	
 	self.colorLabel.frame = CGRectMake(CGRectGetMinX(contentRect), CGRectGetMinY(contentRect), CGRectGetWidth(contentRect), CGRectGetMinY(self.hueWheel.frame) - CGRectGetMinY(contentRect));
     
-    CGRect switchRect = CGRectMake(self.bounds.size.width/2 - 25, self.hueWheel.frame.origin.x + hueWheelSide , 20, 50);
-    self.paintSwitch.frame = switchRect;
+    CGFloat width = 80;
+    CGRect switchRect = CGRectMake(self.bounds.size.width/2 - width/2, self.hueWheel.frame.origin.y + hueWheelSide/2 - width/2 , width, width);
+    self.paintButton.frame = switchRect;
 }
 
-- (void) switchStateChanged
-{
-    if([self.paintSwitch isOn])
-        [self.escNotifier switchStateDidChange:YES];
-    else
-        [self.escNotifier switchStateDidChange:NO];
-}
+//- (void) switchStateChanged:
+//{
+//    if([self.paintSwitch isOn])
+//        [self.escNotifier switchStateDidChange:YES];
+//    else
+//        [self.escNotifier switchStateDidChange:NO];
+//}
 
 @end
