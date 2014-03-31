@@ -102,6 +102,25 @@
             </objects>
             <point key="canvasLocation" x="1268" y="-187"/>
         </scene>
+        <!--Design Chooser View Controller-->
+        <scene sceneID="tuk-p3-tDN">
+            <objects>
+                <viewController id="heD-e5-TIo" customClass="DesignChooserViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Zn7-rD-drz"/>
+                        <viewControllerLayoutGuide type="bottom" id="eEm-84-nED"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="pcm-YB-ulj">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="rxW-N0-9Ng"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jd8-67-OP8" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1722" y="516"/>
+        </scene>
         <!--Apparel Chooser View Controller-->
         <scene sceneID="MhJ-sL-DnM">
             <objects>
@@ -116,6 +135,9 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="LYg-QJ-Hhx"/>
+                    <connections>
+                        <segue destination="heD-e5-TIo" kind="push" identifier="designSegue" id="awy-3z-OTe"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Lb8-zb-OQM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

@@ -26,8 +26,10 @@
     self.navigationItem.backBarButtonItem = temporaryBarButtonItem;
     
     [self addCardViewWithID:[NSNumber numberWithInt:1] Image:[UIImage imageNamed:@"1.png"] ButtonTitle:@"Choose"];
-    [self addCardViewWithID:[NSNumber numberWithInt:2] Image:nil ButtonTitle:@"Choose"];
-    [self addCardViewWithID:[NSNumber numberWithInt:3] Image:nil ButtonTitle:@"Choose"];
+    [self addCardViewWithID:[NSNumber numberWithInt:2] Image:[UIImage imageNamed:@"2.png"] ButtonTitle:@"Choose"];
+    [self addCardViewWithID:[NSNumber numberWithInt:3] Image:[UIImage imageNamed:@"3.png"] ButtonTitle:@"Choose"];
+    [self addCardViewWithID:[NSNumber numberWithInt:4] Image:[UIImage imageNamed:@"4.png"] ButtonTitle:@"Choose"];
+    [self addCardViewWithID:[NSNumber numberWithInt:5] Image:[UIImage imageNamed:@"5.png"] ButtonTitle:@"Choose"];
     [[ConnectionManager sharedManager] sendMessage:[NSString stringWithFormat:@"/apparel_start/"]];
 }
 
@@ -40,11 +42,17 @@
 {
     NSLog(@"Pressed");
     [[ConnectionManager sharedManager] sendMessage:[NSString stringWithFormat:@"/cloth/%@", cardView.ID]];
+    [self performSegueWithIdentifier:@"designSegue" sender:cardView.ID];
 }
 
 - (void) viewDidDisappear:(BOOL)animated
 {
     [[ConnectionManager sharedManager] sendMessage:[NSString stringWithFormat:@"/apparel_stop/"]];
+}
+
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    
 }
 
 @end

@@ -11,6 +11,16 @@
 		1511961A18E9676A00BC13E2 /* CircularButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 1511961918E9676A00BC13E2 /* CircularButton.m */; };
 		1511961C18E968FF00BC13E2 /* brush.png in Resources */ = {isa = PBXBuildFile; fileRef = 1511961B18E968FF00BC13E2 /* brush.png */; };
 		1511961E18E972B200BC13E2 /* brush-inverted.png in Resources */ = {isa = PBXBuildFile; fileRef = 1511961D18E972B200BC13E2 /* brush-inverted.png */; };
+		1511962118E9825400BC13E2 /* DesignChooserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1511962018E9825400BC13E2 /* DesignChooserViewController.m */; };
+		1511962618E9C45300BC13E2 /* 2.png in Resources */ = {isa = PBXBuildFile; fileRef = 1511962218E9C45300BC13E2 /* 2.png */; };
+		1511962718E9C45300BC13E2 /* 3.png in Resources */ = {isa = PBXBuildFile; fileRef = 1511962318E9C45300BC13E2 /* 3.png */; };
+		1511962818E9C45300BC13E2 /* 4.png in Resources */ = {isa = PBXBuildFile; fileRef = 1511962418E9C45300BC13E2 /* 4.png */; };
+		1511962D18E9C73B00BC13E2 /* 1.png in Resources */ = {isa = PBXBuildFile; fileRef = 1511962B18E9C73B00BC13E2 /* 1.png */; };
+		1511962E18E9C73B00BC13E2 /* 5.png in Resources */ = {isa = PBXBuildFile; fileRef = 1511962C18E9C73B00BC13E2 /* 5.png */; };
+		1511963318E9CA4100BC13E2 /* d1.png in Resources */ = {isa = PBXBuildFile; fileRef = 1511962F18E9CA4100BC13E2 /* d1.png */; };
+		1511963418E9CA4100BC13E2 /* d2.png in Resources */ = {isa = PBXBuildFile; fileRef = 1511963018E9CA4100BC13E2 /* d2.png */; };
+		1511963518E9CA4100BC13E2 /* d3.png in Resources */ = {isa = PBXBuildFile; fileRef = 1511963118E9CA4100BC13E2 /* d3.png */; };
+		1511963818E9CA7000BC13E2 /* d4.png in Resources */ = {isa = PBXBuildFile; fileRef = 1511963718E9CA7000BC13E2 /* d4.png */; };
 		1532BD2C18A2421400990F48 /* ESCGradientSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 1532BD2718A2421400990F48 /* ESCGradientSlider.m */; };
 		1532BD2D18A2421400990F48 /* ESCHueWheel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1532BD2918A2421400990F48 /* ESCHueWheel.m */; };
 		1532BD2E18A2421400990F48 /* ESCColorControlThumb.m in Sources */ = {isa = PBXBuildFile; fileRef = 1532BD2B18A2421400990F48 /* ESCColorControlThumb.m */; };
@@ -21,7 +31,6 @@
 		1532BD4C18A243CB00990F48 /* ESCColorPickerModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1532BD4B18A243CB00990F48 /* ESCColorPickerModel.m */; };
 		1532BD5018A2447200990F48 /* FYPPaletteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1532BD4F18A2447200990F48 /* FYPPaletteViewController.m */; };
 		1532BD8E18A3F7A000990F48 /* AKTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 1532BD8D18A3F7A000990F48 /* AKTextField.m */; };
-		157B838F18DD7C7C00A4AC15 /* 1.png in Resources */ = {isa = PBXBuildFile; fileRef = 157B838E18DD7C7C00A4AC15 /* 1.png */; };
 		157BF20518D4596D002C848D /* FUIButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 157BF1FA18D4596D002C848D /* FUIButton.m */; };
 		157BF20618D4596D002C848D /* REPagedScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 157BF1FC18D4596D002C848D /* REPagedScrollView.m */; };
 		157BF20718D4596D002C848D /* TTCardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 157BF1FE18D4596D002C848D /* TTCardView.m */; };
@@ -63,6 +72,17 @@
 		1511961918E9676A00BC13E2 /* CircularButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CircularButton.m; sourceTree = "<group>"; };
 		1511961B18E968FF00BC13E2 /* brush.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = brush.png; sourceTree = "<group>"; };
 		1511961D18E972B200BC13E2 /* brush-inverted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "brush-inverted.png"; sourceTree = "<group>"; };
+		1511961F18E9825400BC13E2 /* DesignChooserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DesignChooserViewController.h; sourceTree = "<group>"; };
+		1511962018E9825400BC13E2 /* DesignChooserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DesignChooserViewController.m; sourceTree = "<group>"; };
+		1511962218E9C45300BC13E2 /* 2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 2.png; sourceTree = "<group>"; };
+		1511962318E9C45300BC13E2 /* 3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 3.png; sourceTree = "<group>"; };
+		1511962418E9C45300BC13E2 /* 4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 4.png; sourceTree = "<group>"; };
+		1511962B18E9C73B00BC13E2 /* 1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1.png; sourceTree = "<group>"; };
+		1511962C18E9C73B00BC13E2 /* 5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 5.png; sourceTree = "<group>"; };
+		1511962F18E9CA4100BC13E2 /* d1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = d1.png; sourceTree = "<group>"; };
+		1511963018E9CA4100BC13E2 /* d2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = d2.png; sourceTree = "<group>"; };
+		1511963118E9CA4100BC13E2 /* d3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = d3.png; sourceTree = "<group>"; };
+		1511963718E9CA7000BC13E2 /* d4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = d4.png; sourceTree = "<group>"; };
 		1532BD2618A2421400990F48 /* ESCGradientSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESCGradientSlider.h; sourceTree = "<group>"; };
 		1532BD2718A2421400990F48 /* ESCGradientSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ESCGradientSlider.m; sourceTree = "<group>"; };
 		1532BD2818A2421400990F48 /* ESCHueWheel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESCHueWheel.h; sourceTree = "<group>"; };
@@ -83,7 +103,6 @@
 		1532BD4F18A2447200990F48 /* FYPPaletteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FYPPaletteViewController.m; sourceTree = "<group>"; };
 		1532BD8C18A3F7A000990F48 /* AKTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKTextField.h; sourceTree = "<group>"; };
 		1532BD8D18A3F7A000990F48 /* AKTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKTextField.m; sourceTree = "<group>"; };
-		157B838E18DD7C7C00A4AC15 /* 1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1.png; sourceTree = "<group>"; };
 		157BF1F918D4596D002C848D /* FUIButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FUIButton.h; sourceTree = "<group>"; };
 		157BF1FA18D4596D002C848D /* FUIButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FUIButton.m; sourceTree = "<group>"; };
 		157BF1FB18D4596D002C848D /* REPagedScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REPagedScrollView.h; sourceTree = "<group>"; };
@@ -146,6 +165,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1511962A18E9C45C00BC13E2 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				1511961B18E968FF00BC13E2 /* brush.png */,
+				1511961D18E972B200BC13E2 /* brush-inverted.png */,
+				1511962F18E9CA4100BC13E2 /* d1.png */,
+				1511963018E9CA4100BC13E2 /* d2.png */,
+				1511963118E9CA4100BC13E2 /* d3.png */,
+				1511963718E9CA7000BC13E2 /* d4.png */,
+				1511962B18E9C73B00BC13E2 /* 1.png */,
+				1511962218E9C45300BC13E2 /* 2.png */,
+				1511962318E9C45300BC13E2 /* 3.png */,
+				1511962418E9C45300BC13E2 /* 4.png */,
+				1511962C18E9C73B00BC13E2 /* 5.png */,
+			);
+			name = Images;
+			sourceTree = "<group>";
+		};
 		1532BD2F18A2421A00990F48 /* ColorPickerCustomControls */ = {
 			isa = PBXGroup;
 			children = (
@@ -243,9 +280,7 @@
 				1532BD4D18A243D100990F48 /* ColorPickerComponents */,
 				15CFC925180D39AD00888F11 /* AppDelegate.h */,
 				15CFC926180D39AD00888F11 /* AppDelegate.m */,
-				1511961B18E968FF00BC13E2 /* brush.png */,
-				1511961D18E972B200BC13E2 /* brush-inverted.png */,
-				157B838E18DD7C7C00A4AC15 /* 1.png */,
+				1511962A18E9C45C00BC13E2 /* Images */,
 				15CFC94B180D39EA00888F11 /* NSStream+Additions.h */,
 				15CFC94C180D39EA00888F11 /* NSStream+Additions.m */,
 				15CFC928180D39AD00888F11 /* Main.storyboard */,
@@ -253,6 +288,8 @@
 				1532BD4F18A2447200990F48 /* FYPPaletteViewController.m */,
 				157BF20C18D45A8C002C848D /* ApparelChooserViewController.h */,
 				157BF20D18D45A8C002C848D /* ApparelChooserViewController.m */,
+				1511961F18E9825400BC13E2 /* DesignChooserViewController.h */,
+				1511962018E9825400BC13E2 /* DesignChooserViewController.m */,
 				15CFC92B180D39AD00888F11 /* NetworkViewController.h */,
 				15CFC92C180D39AD00888F11 /* NetworkViewController.m */,
 				15CFC92E180D39AD00888F11 /* Images.xcassets */,
@@ -374,10 +411,18 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1511963518E9CA4100BC13E2 /* d3.png in Resources */,
+				1511963818E9CA7000BC13E2 /* d4.png in Resources */,
+				1511962D18E9C73B00BC13E2 /* 1.png in Resources */,
+				1511962E18E9C73B00BC13E2 /* 5.png in Resources */,
+				1511962818E9C45300BC13E2 /* 4.png in Resources */,
+				1511963418E9CA4100BC13E2 /* d2.png in Resources */,
 				15CFC92F180D39AD00888F11 /* Images.xcassets in Resources */,
+				1511963318E9CA4100BC13E2 /* d1.png in Resources */,
 				1511961E18E972B200BC13E2 /* brush-inverted.png in Resources */,
+				1511962618E9C45300BC13E2 /* 2.png in Resources */,
+				1511962718E9C45300BC13E2 /* 3.png in Resources */,
 				15CFC921180D39AD00888F11 /* InfoPlist.strings in Resources */,
-				157B838F18DD7C7C00A4AC15 /* 1.png in Resources */,
 				15CFC92A180D39AD00888F11 /* Main.storyboard in Resources */,
 				1511961C18E968FF00BC13E2 /* brush.png in Resources */,
 			);
@@ -418,6 +463,7 @@
 				1532BD2E18A2421400990F48 /* ESCColorControlThumb.m in Sources */,
 				15CFC923180D39AD00888F11 /* main.m in Sources */,
 				157BF20818D4596D002C848D /* TTCardViewController.m in Sources */,
+				1511962118E9825400BC13E2 /* DesignChooserViewController.m in Sources */,
 				1532BD3518A2423A00990F48 /* ESCColorPickerPresenter.m in Sources */,
 				1532BD5018A2447200990F48 /* FYPPaletteViewController.m in Sources */,
 				157BF20518D4596D002C848D /* FUIButton.m in Sources */,
