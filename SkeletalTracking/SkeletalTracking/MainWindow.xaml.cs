@@ -78,7 +78,11 @@ namespace SkeletalTracking
         System.Windows.Media.Color currentColor;
         Server TCPServer;
         Boolean isPainting;
+        Boolean shouldClearCanvas;
         Boolean initialized;
+
+        string shirt;
+        string designFile;
 
         enum Mode {None, Paint, Apparel};
         Mode applicationMode;
@@ -159,12 +163,14 @@ namespace SkeletalTracking
 
             kinectSensorChooser1.KinectSensorChanged += new DependencyPropertyChangedEventHandler(kinectSensorChooser1_KinectSensorChanged);
             clothImage.Visibility = Visibility.Hidden;
+            designImage.Visibility = Visibility.Hidden;
             inkCanvas.Visibility = Visibility.Hidden;
             currentColor = Colors.CadetBlue;
             isPainting = false;
             initialized = false;
 
             applicationMode = Mode.None;
+            shouldClearCanvas = false;
 
             TCPServer = new Server();
             TCPServer.ServerEvent += TCPServer_ServerEvent;
@@ -211,9 +217,23 @@ namespace SkeletalTracking
                 System.Drawing.Color c = System.Drawing.ColorTranslator.FromHtml(colorHex);
                 currentColor = System.Windows.Media.Color.FromArgb(c.A, c.R, c.G, c.B);
             }
-            else if (s.StartsWith("/choose/"))
+            else if (s.StartsWith("/clean_canvas/"))
             {
-
+                shouldClearCanvas = true;
+            }
+            else if (s.StartsWith("/cloth/"))
+            {
+                string choice = s.Substring(7);
+                shirt = choice + ".png";
+            }
+            else if (s.StartsWith("/design/"))
+            {
+                string choice = s.Substring (8);
+                designFile = "d" + choice + ".png";
+            }
+            else if (s.StartsWith("/clear_design/"))
+            {
+                designFile = null;
             }
 
         }
@@ -227,10 +247,12 @@ namespace SkeletalTracking
             else if (applicationMode == Mode.Paint)
             {
                 clothImage.Visibility = Visibility.Hidden;
+                designImage.Visibility = Visibility.Hidden;
                 inkCanvas.Visibility = Visibility.Visible;
             }
             else
             {
+                designImage.Visibility = Visibility.Hidden;
                 clothImage.Visibility = Visibility.Hidden;
                 inkCanvas.Visibility = Visibility.Hidden;
             }
@@ -930,6 +952,13 @@ namespace SkeletalTracking
         {
             if (applicationMode != Mode.Paint)
                 return;
+            if (shouldClearCanvas == true)
+            {
+                inkCanvas.Strokes.Clear();
+                shouldClearCanvas = false;
+                inkCanvas.Children.Clear();
+                return;
+            }
             if (nextPoint.X == 0 && nextPoint.Y == 0)
             {
                 initialized = false;
@@ -969,10 +998,20 @@ namespace SkeletalTracking
         {
             if (applicationMode != Mode.Apparel)
                 return;
-            clothImage.Source = new BitmapImage(new Uri(@"shirt.png", UriKind.Relative));
+            if (shirt == null)
+                return;
+            clothImage.Source = new BitmapImage(new Uri(shirt, UriKind.Relative));
             System.Windows.Point right = convertKinectPointToScreenPoint(new System.Windows.Point(rightShoulder.X, rightShoulder.Y));
             System.Windows.Point mid = convertKinectPointToScreenPoint(new System.Windows.Point(midShoulder.X, midShoulder.Y));
             System.Windows.Point left = convertKinectPointToScreenPoint(new System.Windows.Point(leftShoulder.X, leftShoulder.Y));
+            //clothImage.Visibility = Visibility.Visible;
+            //clothImage.Width = 100;
+            //clothImage.Height = 100;
+            //Canvas.SetLeft(clothImage, 0);
+            //Canvas.SetTop(clothImage, 0);
+            //return;
+
+            Boolean flag = true;
             if ((right.X == 0 && right.Y == 0) || (right.X == 0 && right.Y == 0))
             {
                 clothImage.Visibility = Visibility.Hidden;
@@ -987,9 +1026,23 @@ namespace SkeletalTracking
             {
                 Canvas.SetTop(clothImage, right.Y - clothImage.Height * 0.2); // replace with shoulder centre
                 clothImage.Visibility = Visibility.Hidden;
+                flag = false;
             }
             else
                 Canvas.SetTop(clothImage, mid.Y);//(mid.Y + right.Y)/2.0); 
+
+            if (designFile == null || flag == false)
+            {
+                designImage.Visibility = Visibility.Hidden;
+                return;
+            }
+            designImage.Visibility = Visibility.Visible;
+            designImage.Source = new BitmapImage(new Uri(designFile, UriKind.Relative));
+            designImage.Width = clothImage.Width / 3;
+            designImage.Height = designImage.Width;
+            Canvas.SetTop(designImage, Canvas.GetTop(clothImage) + clothImage.Height / 2 - designImage.Height / 2);
+            Canvas.SetLeft(designImage, Canvas.GetLeft(clothImage) + clothImage.Width / 2 - designImage.Width/ 2);
+
         }
     }
 }

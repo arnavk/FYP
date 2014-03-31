@@ -89,9 +89,9 @@ namespace SkeletalTracking
                 System.Console.WriteLine(mes);
                 ServerEvent(mes);
                 //Server reply to the client
-                byte[] buffer = encoder.GetBytes(mes);
-                clientStream.Write(buffer, 0, buffer.Length);
-                clientStream.Flush();
+                //byte[] buffer = encoder.GetBytes(mes);
+                //clientStream.Write(buffer, 0, buffer.Length);
+                //clientStream.Flush();
             }
             tcpClient.Close();
         }
