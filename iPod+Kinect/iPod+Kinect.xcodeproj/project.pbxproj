@@ -7,6 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1511961418E94EB500BC13E2 /* ConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1511961318E94EB500BC13E2 /* ConnectionManager.m */; };
+		1532BD2C18A2421400990F48 /* ESCGradientSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 1532BD2718A2421400990F48 /* ESCGradientSlider.m */; };
+		1532BD2D18A2421400990F48 /* ESCHueWheel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1532BD2918A2421400990F48 /* ESCHueWheel.m */; };
+		1532BD2E18A2421400990F48 /* ESCColorControlThumb.m in Sources */ = {isa = PBXBuildFile; fileRef = 1532BD2B18A2421400990F48 /* ESCColorControlThumb.m */; };
+		1532BD3418A2423A00990F48 /* ESCColorPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1532BD3118A2423A00990F48 /* ESCColorPickerView.m */; };
+		1532BD3518A2423A00990F48 /* ESCColorPickerPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1532BD3318A2423A00990F48 /* ESCColorPickerPresenter.m */; };
+		1532BD4718A2435800990F48 /* ESCObservable.m in Sources */ = {isa = PBXBuildFile; fileRef = 1532BD4218A2435800990F48 /* ESCObservable.m */; };
+		1532BD4818A2435800990F48 /* ESCObserversProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 1532BD4418A2435800990F48 /* ESCObserversProxy.m */; };
+		1532BD4C18A243CB00990F48 /* ESCColorPickerModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1532BD4B18A243CB00990F48 /* ESCColorPickerModel.m */; };
+		1532BD5018A2447200990F48 /* FYPPaletteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1532BD4F18A2447200990F48 /* FYPPaletteViewController.m */; };
+		1532BD8E18A3F7A000990F48 /* AKTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 1532BD8D18A3F7A000990F48 /* AKTextField.m */; };
+		157B838F18DD7C7C00A4AC15 /* 1.png in Resources */ = {isa = PBXBuildFile; fileRef = 157B838E18DD7C7C00A4AC15 /* 1.png */; };
+		157BF20518D4596D002C848D /* FUIButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 157BF1FA18D4596D002C848D /* FUIButton.m */; };
+		157BF20618D4596D002C848D /* REPagedScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 157BF1FC18D4596D002C848D /* REPagedScrollView.m */; };
+		157BF20718D4596D002C848D /* TTCardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 157BF1FE18D4596D002C848D /* TTCardView.m */; };
+		157BF20818D4596D002C848D /* TTCardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 157BF20018D4596D002C848D /* TTCardViewController.m */; };
+		157BF20918D4596D002C848D /* UIColor+FlatUI.m in Sources */ = {isa = PBXBuildFile; fileRef = 157BF20218D4596D002C848D /* UIColor+FlatUI.m */; };
+		157BF20A18D4596D002C848D /* UIImage+FlatUI.m in Sources */ = {isa = PBXBuildFile; fileRef = 157BF20418D4596D002C848D /* UIImage+FlatUI.m */; };
+		157BF20E18D45A8C002C848D /* ApparelChooserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 157BF20D18D45A8C002C848D /* ApparelChooserViewController.m */; };
 		15CFC917180D39AD00888F11 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15CFC916180D39AD00888F11 /* Foundation.framework */; };
 		15CFC919180D39AD00888F11 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15CFC918180D39AD00888F11 /* CoreGraphics.framework */; };
 		15CFC91B180D39AD00888F11 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 15CFC91A180D39AD00888F11 /* UIKit.framework */; };
@@ -35,6 +54,44 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		1511961218E94EB500BC13E2 /* ConnectionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionManager.h; sourceTree = "<group>"; };
+		1511961318E94EB500BC13E2 /* ConnectionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectionManager.m; sourceTree = "<group>"; };
+		1532BD2618A2421400990F48 /* ESCGradientSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESCGradientSlider.h; sourceTree = "<group>"; };
+		1532BD2718A2421400990F48 /* ESCGradientSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ESCGradientSlider.m; sourceTree = "<group>"; };
+		1532BD2818A2421400990F48 /* ESCHueWheel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESCHueWheel.h; sourceTree = "<group>"; };
+		1532BD2918A2421400990F48 /* ESCHueWheel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ESCHueWheel.m; sourceTree = "<group>"; };
+		1532BD2A18A2421400990F48 /* ESCColorControlThumb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESCColorControlThumb.h; sourceTree = "<group>"; };
+		1532BD2B18A2421400990F48 /* ESCColorControlThumb.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ESCColorControlThumb.m; sourceTree = "<group>"; };
+		1532BD3018A2423A00990F48 /* ESCColorPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESCColorPickerView.h; sourceTree = "<group>"; };
+		1532BD3118A2423A00990F48 /* ESCColorPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ESCColorPickerView.m; sourceTree = "<group>"; };
+		1532BD3218A2423A00990F48 /* ESCColorPickerPresenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESCColorPickerPresenter.h; sourceTree = "<group>"; };
+		1532BD3318A2423A00990F48 /* ESCColorPickerPresenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ESCColorPickerPresenter.m; sourceTree = "<group>"; };
+		1532BD4118A2435800990F48 /* ESCObservable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESCObservable.h; sourceTree = "<group>"; };
+		1532BD4218A2435800990F48 /* ESCObservable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ESCObservable.m; sourceTree = "<group>"; };
+		1532BD4318A2435800990F48 /* ESCObserversProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESCObserversProxy.h; sourceTree = "<group>"; };
+		1532BD4418A2435800990F48 /* ESCObserversProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ESCObserversProxy.m; sourceTree = "<group>"; };
+		1532BD4A18A243CB00990F48 /* ESCColorPickerModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESCColorPickerModel.h; sourceTree = "<group>"; };
+		1532BD4B18A243CB00990F48 /* ESCColorPickerModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ESCColorPickerModel.m; sourceTree = "<group>"; };
+		1532BD4E18A2447200990F48 /* FYPPaletteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FYPPaletteViewController.h; sourceTree = "<group>"; };
+		1532BD4F18A2447200990F48 /* FYPPaletteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FYPPaletteViewController.m; sourceTree = "<group>"; };
+		1532BD8C18A3F7A000990F48 /* AKTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AKTextField.h; sourceTree = "<group>"; };
+		1532BD8D18A3F7A000990F48 /* AKTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AKTextField.m; sourceTree = "<group>"; };
+		157B838E18DD7C7C00A4AC15 /* 1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1.png; sourceTree = "<group>"; };
+		157BF1F918D4596D002C848D /* FUIButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FUIButton.h; sourceTree = "<group>"; };
+		157BF1FA18D4596D002C848D /* FUIButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FUIButton.m; sourceTree = "<group>"; };
+		157BF1FB18D4596D002C848D /* REPagedScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REPagedScrollView.h; sourceTree = "<group>"; };
+		157BF1FC18D4596D002C848D /* REPagedScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REPagedScrollView.m; sourceTree = "<group>"; };
+		157BF1FD18D4596D002C848D /* TTCardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTCardView.h; sourceTree = "<group>"; };
+		157BF1FE18D4596D002C848D /* TTCardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTCardView.m; sourceTree = "<group>"; };
+		157BF1FF18D4596D002C848D /* TTCardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTCardViewController.h; sourceTree = "<group>"; };
+		157BF20018D4596D002C848D /* TTCardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTCardViewController.m; sourceTree = "<group>"; };
+		157BF20118D4596D002C848D /* UIColor+FlatUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+FlatUI.h"; sourceTree = "<group>"; };
+		157BF20218D4596D002C848D /* UIColor+FlatUI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+FlatUI.m"; sourceTree = "<group>"; };
+		157BF20318D4596D002C848D /* UIImage+FlatUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+FlatUI.h"; sourceTree = "<group>"; };
+		157BF20418D4596D002C848D /* UIImage+FlatUI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+FlatUI.m"; sourceTree = "<group>"; };
+		157BF20C18D45A8C002C848D /* ApparelChooserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ApparelChooserViewController.h; sourceTree = "<group>"; };
+		157BF20D18D45A8C002C848D /* ApparelChooserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ApparelChooserViewController.m; sourceTree = "<group>"; };
+		157BF20F18D46BBB002C848D /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		15CFC913180D39AD00888F11 /* iPod+Kinect.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iPod+Kinect.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		15CFC916180D39AD00888F11 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		15CFC918180D39AD00888F11 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -82,6 +139,63 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1532BD2F18A2421A00990F48 /* ColorPickerCustomControls */ = {
+			isa = PBXGroup;
+			children = (
+				1532BD2618A2421400990F48 /* ESCGradientSlider.h */,
+				1532BD2718A2421400990F48 /* ESCGradientSlider.m */,
+				1532BD2818A2421400990F48 /* ESCHueWheel.h */,
+				1532BD2918A2421400990F48 /* ESCHueWheel.m */,
+				1532BD2A18A2421400990F48 /* ESCColorControlThumb.h */,
+				1532BD2B18A2421400990F48 /* ESCColorControlThumb.m */,
+			);
+			name = ColorPickerCustomControls;
+			sourceTree = "<group>";
+		};
+		1532BD4018A2435800990F48 /* ESCObservable */ = {
+			isa = PBXGroup;
+			children = (
+				1532BD4118A2435800990F48 /* ESCObservable.h */,
+				1532BD4218A2435800990F48 /* ESCObservable.m */,
+				1532BD4318A2435800990F48 /* ESCObserversProxy.h */,
+				1532BD4418A2435800990F48 /* ESCObserversProxy.m */,
+			);
+			path = ESCObservable;
+			sourceTree = "<group>";
+		};
+		1532BD4D18A243D100990F48 /* ColorPickerComponents */ = {
+			isa = PBXGroup;
+			children = (
+				1532BD2F18A2421A00990F48 /* ColorPickerCustomControls */,
+				1532BD4A18A243CB00990F48 /* ESCColorPickerModel.h */,
+				1532BD4B18A243CB00990F48 /* ESCColorPickerModel.m */,
+				1532BD3018A2423A00990F48 /* ESCColorPickerView.h */,
+				1532BD3118A2423A00990F48 /* ESCColorPickerView.m */,
+				1532BD3218A2423A00990F48 /* ESCColorPickerPresenter.h */,
+				1532BD3318A2423A00990F48 /* ESCColorPickerPresenter.m */,
+			);
+			name = ColorPickerComponents;
+			sourceTree = "<group>";
+		};
+		157BF20B18D45975002C848D /* Apparel */ = {
+			isa = PBXGroup;
+			children = (
+				157BF1F918D4596D002C848D /* FUIButton.h */,
+				157BF1FA18D4596D002C848D /* FUIButton.m */,
+				157BF1FB18D4596D002C848D /* REPagedScrollView.h */,
+				157BF1FC18D4596D002C848D /* REPagedScrollView.m */,
+				157BF1FD18D4596D002C848D /* TTCardView.h */,
+				157BF1FE18D4596D002C848D /* TTCardView.m */,
+				157BF1FF18D4596D002C848D /* TTCardViewController.h */,
+				157BF20018D4596D002C848D /* TTCardViewController.m */,
+				157BF20118D4596D002C848D /* UIColor+FlatUI.h */,
+				157BF20218D4596D002C848D /* UIColor+FlatUI.m */,
+				157BF20318D4596D002C848D /* UIImage+FlatUI.h */,
+				157BF20418D4596D002C848D /* UIImage+FlatUI.m */,
+			);
+			name = Apparel;
+			sourceTree = "<group>";
+		};
 		15CFC90A180D39AD00888F11 = {
 			isa = PBXGroup;
 			children = (
@@ -115,15 +229,27 @@
 		15CFC91C180D39AD00888F11 /* iPod+Kinect */ = {
 			isa = PBXGroup;
 			children = (
+				1532BD8C18A3F7A000990F48 /* AKTextField.h */,
+				1532BD8D18A3F7A000990F48 /* AKTextField.m */,
+				157BF20B18D45975002C848D /* Apparel */,
+				1532BD4018A2435800990F48 /* ESCObservable */,
+				1532BD4D18A243D100990F48 /* ColorPickerComponents */,
 				15CFC925180D39AD00888F11 /* AppDelegate.h */,
 				15CFC926180D39AD00888F11 /* AppDelegate.m */,
+				157B838E18DD7C7C00A4AC15 /* 1.png */,
 				15CFC94B180D39EA00888F11 /* NSStream+Additions.h */,
 				15CFC94C180D39EA00888F11 /* NSStream+Additions.m */,
 				15CFC928180D39AD00888F11 /* Main.storyboard */,
+				1532BD4E18A2447200990F48 /* FYPPaletteViewController.h */,
+				1532BD4F18A2447200990F48 /* FYPPaletteViewController.m */,
+				157BF20C18D45A8C002C848D /* ApparelChooserViewController.h */,
+				157BF20D18D45A8C002C848D /* ApparelChooserViewController.m */,
 				15CFC92B180D39AD00888F11 /* NetworkViewController.h */,
 				15CFC92C180D39AD00888F11 /* NetworkViewController.m */,
 				15CFC92E180D39AD00888F11 /* Images.xcassets */,
 				15CFC91D180D39AD00888F11 /* Supporting Files */,
+				1511961218E94EB500BC13E2 /* ConnectionManager.h */,
+				1511961318E94EB500BC13E2 /* ConnectionManager.m */,
 			);
 			path = "iPod+Kinect";
 			sourceTree = "<group>";
@@ -134,6 +260,7 @@
 				15CFC91E180D39AD00888F11 /* iPod+Kinect-Info.plist */,
 				15CFC91F180D39AD00888F11 /* InfoPlist.strings */,
 				15CFC922180D39AD00888F11 /* main.m */,
+				157BF20F18D46BBB002C848D /* Constants.h */,
 				15CFC924180D39AD00888F11 /* iPod+Kinect-Prefix.pch */,
 			);
 			name = "Supporting Files";
@@ -201,9 +328,12 @@
 		15CFC90B180D39AD00888F11 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "Arnav Kumar";
 				TargetAttributes = {
+					15CFC912180D39AD00888F11 = {
+						DevelopmentTeam = LBD6LHEX2W;
+					};
 					15CFC933180D39AD00888F11 = {
 						TestTargetID = 15CFC912180D39AD00888F11;
 					};
@@ -235,6 +365,7 @@
 			files = (
 				15CFC92F180D39AD00888F11 /* Images.xcassets in Resources */,
 				15CFC921180D39AD00888F11 /* InfoPlist.strings in Resources */,
+				157B838F18DD7C7C00A4AC15 /* 1.png in Resources */,
 				15CFC92A180D39AD00888F11 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -254,10 +385,28 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				157BF20618D4596D002C848D /* REPagedScrollView.m in Sources */,
+				1532BD2D18A2421400990F48 /* ESCHueWheel.m in Sources */,
 				15CFC92D180D39AD00888F11 /* NetworkViewController.m in Sources */,
+				1511961418E94EB500BC13E2 /* ConnectionManager.m in Sources */,
+				157BF20918D4596D002C848D /* UIColor+FlatUI.m in Sources */,
+				1532BD3418A2423A00990F48 /* ESCColorPickerView.m in Sources */,
+				1532BD8E18A3F7A000990F48 /* AKTextField.m in Sources */,
+				157BF20718D4596D002C848D /* TTCardView.m in Sources */,
 				15CFC927180D39AD00888F11 /* AppDelegate.m in Sources */,
+				1532BD2C18A2421400990F48 /* ESCGradientSlider.m in Sources */,
 				15CFC94D180D39EA00888F11 /* NSStream+Additions.m in Sources */,
+				1532BD4C18A243CB00990F48 /* ESCColorPickerModel.m in Sources */,
+				1532BD4718A2435800990F48 /* ESCObservable.m in Sources */,
+				157BF20E18D45A8C002C848D /* ApparelChooserViewController.m in Sources */,
+				157BF20A18D4596D002C848D /* UIImage+FlatUI.m in Sources */,
+				1532BD4818A2435800990F48 /* ESCObserversProxy.m in Sources */,
+				1532BD2E18A2421400990F48 /* ESCColorControlThumb.m in Sources */,
 				15CFC923180D39AD00888F11 /* main.m in Sources */,
+				157BF20818D4596D002C848D /* TTCardViewController.m in Sources */,
+				1532BD3518A2423A00990F48 /* ESCColorPickerPresenter.m in Sources */,
+				1532BD5018A2447200990F48 /* FYPPaletteViewController.m in Sources */,
+				157BF20518D4596D002C848D /* FUIButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -311,7 +460,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -350,7 +498,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -384,10 +531,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iPod+Kinect/iPod+Kinect-Prefix.pch";
 				INFOPLIST_FILE = "iPod+Kinect/iPod+Kinect-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -397,10 +547,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "iPod+Kinect/iPod+Kinect-Prefix.pch";
 				INFOPLIST_FILE = "iPod+Kinect/iPod+Kinect-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -408,7 +561,6 @@
 		15CFC949180D39AD00888F11 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/iPod+Kinect.app/iPod+Kinect";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -431,7 +583,6 @@
 		15CFC94A180D39AD00888F11 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/iPod+Kinect.app/iPod+Kinect";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -466,6 +617,7 @@
 				15CFC947180D39AD00888F11 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		15CFC948180D39AD00888F11 /* Build configuration list for PBXNativeTarget "iPod+KinectTests" */ = {
 			isa = XCConfigurationList;
@@ -474,6 +626,7 @@
 				15CFC94A180D39AD00888F11 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

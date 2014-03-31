@@ -1,78 +1,95 @@
 //
-//  NetworkViewController.m
-//  iPodClient
+//  FYPPalletteViewController.m
+//  iPod+Kinect
 //
-//  Created by Arnav Kumar on 15/10/13.
-//  Copyright (c) 2013 Arnav Kumar. All rights reserved.
+//  Created by Arnav Kumar on 5/2/14.
+//  Copyright (c) 2014 Arnav Kumar. All rights reserved.
 //
 
-#import "NetworkViewController.h"
-#import "NSStream+Additions.h"
 #import "FYPPaletteViewController.h"
-#import "ApparelChooserViewController.h"
+#import "ESCColorPickerView.h"
+#import "ESCColorPickerModel.h"
+#import "ESCColorPickerPresenter.h"
 #import "ConnectionManager.h"
 
-@interface NetworkViewController ()
+@interface FYPPaletteViewController ()<ColorPickerDelegate>
+
+@property ESCColorPickerPresenter *presenter;
+
+@property (nonatomic, strong) NSString *color;
+//@property (nonatomic, strong) NSString *serverIP;
+//@property (nonatomic, strong) NSString *serverPort;
+//
 //@property (nonatomic, strong) NSMutableData *data;
 //@property (nonatomic, strong) NSInputStream *iStream;
 //@property (nonatomic, strong) NSOutputStream *oStream;
-@property (strong, nonatomic) IBOutlet UITextField *ipField;
-@property (strong, nonatomic) IBOutlet UITextField *portField;
-@property (strong, nonatomic) IBOutlet UIButton *paintButton;
-@property (strong, nonatomic) IBOutlet UIButton *apparelChooserButton;
-
 
 @end
 
-@implementation NetworkViewController
+@implementation FYPPaletteViewController
 
 //CFReadStreamRef readStream = NULL;
 //CFWriteStreamRef writeStream = NULL;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
+//- (void) setServerIP:(NSString *)serverIP
+//{
+//    _serverIP = serverIP;
+//}
+//
+//- (void) setServerPort:(NSString *)serverPort
+//{
+//    _serverPort = serverPort;
+//}
 
-- (void)viewDidLoad
+- (void) viewDidLoad
 {
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-    self.navigationController.navigationBar.barTintColor = [UIColor blackColor];
     [super viewDidLoad];
+    
+//    [self connectToServerUsingCFStream:self.serverIP portNo:[self.serverPort intValue]];
+    
     self.view.backgroundColor = [UIColor colorWithWhite:0.1 alpha:1.0];
-    NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:
-                                [UIColor whiteColor], NSForegroundColorAttributeName, nil];
+	
+	CGRect contentRect = self.view.bounds;
+	if ([[[UIDevice currentDevice] systemVersion] integerValue] >= 7) {
+		CGRect statusBarFrame = [self.view convertRect:[[UIApplication sharedApplication] statusBarFrame] fromView:self.view.window];
+		contentRect = UIEdgeInsetsInsetRect(contentRect, UIEdgeInsetsMake(CGRectGetHeight(statusBarFrame), 0.0, 0.0, 0.0));
+	}
+	ESCColorPickerView *colorPickerView = [[ESCColorPickerView alloc] initWithFrame:contentRect];
+	colorPickerView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+	[self.view addSubview:colorPickerView];
+	
+	ESCColorPickerModel *colorPickerModel = [[ESCColorPickerModel alloc] init];
+	
+	self.presenter = [[ESCColorPickerPresenter alloc] initWithView:colorPickerView Model:colorPickerModel andDelegate:self];
+    self.color = @"92DB36";
     
-//    [[UINavigationBar appearance] setTitleTextAttributes:attributes];
-    self.navigationController.navigationBar.titleTextAttributes = attributes;
-//    readStream = NULL;
-//    writeStream = NULL;
+    
+    [[ConnectionManager sharedManager] sendMessage:[NSString stringWithFormat:@"/paint_start/"]];
 }
 
-- (void)didReceiveMemoryWarning
+- (void) colorChangedTo:(NSString *)rgbHex
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    self.color = rgbHex;
+    NSLog(@"%@", self.color);
 }
 
-- (IBAction)paintButtonPressed:(UIButton *)sender {
-    //[self connectToServerUsingCFStream:self.ipField.text portNo:[self.portField.text intValue]];
-    [self performSegueWithIdentifier:@"toColorPalette" sender:nil];
-    
-}
-- (IBAction)apparelButtonPressed {
-    [self performSegueWithIdentifier:@"toApparelChooser" sender:nil];
+- (void) stateChangedTo:(BOOL)state
+{
+    if (state) {
+        [[ConnectionManager sharedManager] sendMessage:[NSString stringWithFormat:@"/start/%@", self.color]];
+    }
+    else
+        [[ConnectionManager sharedManager] sendMessage:@"/stop"];
 }
 
-//- (IBAction)sendMessageButtonPressed:(UIButton *)sender {
-//    const uint8_t *str =
-//    (uint8_t *) [self.messageField.text cStringUsingEncoding:NSASCIIStringEncoding];
+//- (void) sendMessage:(NSString *)message
+//{
+//    const uint8_t *str = (uint8_t *) [message cStringUsingEncoding:NSASCIIStringEncoding];
 //    [self writeToServer:str];
-//    self.messageField.text = @"";
+//}
+
+//- (void) writeToServer:(const uint8_t *) buf {
+//    [self.oStream write:buf maxLength:strlen((char*)buf)];
 //}
 //
 //-(void) connectToServerUsingCFStream:(NSString *) urlStr portNo: (uint) portNo {
@@ -103,10 +120,6 @@
 //                                forMode:NSDefaultRunLoopMode];
 //        [self.oStream open];
 //    }
-//}
-//
-//-(void) writeToServer:(const uint8_t *) buf {
-//    [self.oStream write:buf maxLength:strlen((char*)buf)];
 //}
 //
 //- (void)stream:(NSStream *)stream handleEvent:(NSStreamEvent)eventCode {
@@ -157,24 +170,22 @@
 //			NSLog(@"Unknown event");
 //    }
 //}
+//
+//-(void) disconnect {
+//    [self.iStream close];
+//    [self.oStream close];
+//}
+//
+//- (void) dealloc {
+//    [self disconnect];
+//    if (readStream) CFRelease(readStream);
+//    if (writeStream) CFRelease(writeStream);
+//}
 
-- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+- (void) viewWillDisappear:(BOOL)animated
 {
-    if ([[segue identifier] isEqualToString:@"toColorPalette"])
-    {
-        
-        [[ConnectionManager sharedManager] setServerIP:self.ipField.text];
-        [[ConnectionManager sharedManager] setServerPort:self.portField.text];
-        [[ConnectionManager sharedManager] connect];
-    }
-    
-    if ([[segue identifier] isEqualToString:@"toApparelChooser"])
-    {
-        
-        [[ConnectionManager sharedManager] setServerIP:self.ipField.text];
-        [[ConnectionManager sharedManager] setServerPort:self.portField.text];
-        [[ConnectionManager sharedManager] connect];        
-    }
-    
+    [[ConnectionManager sharedManager] sendMessage:[NSString stringWithFormat:@"/paint_stop/"]];
+//    [self disconnect];
 }
+
 @end
