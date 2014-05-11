@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1505453E191F70D100BC3905 /* TOActivityChrome.m in Sources */ = {isa = PBXBuildFile; fileRef = 15054537191F70D100BC3905 /* TOActivityChrome.m */; };
+		1505453F191F70D100BC3905 /* TOActivitySafari.m in Sources */ = {isa = PBXBuildFile; fileRef = 15054539191F70D100BC3905 /* TOActivitySafari.m */; };
+		15054540191F70D100BC3905 /* TOWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1505453B191F70D100BC3905 /* TOWebViewController.m */; };
+		15054541191F70D100BC3905 /* UIImage+TOWebViewControllerIcons.m in Sources */ = {isa = PBXBuildFile; fileRef = 1505453D191F70D100BC3905 /* UIImage+TOWebViewControllerIcons.m */; };
 		1511961418E94EB500BC13E2 /* ConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1511961318E94EB500BC13E2 /* ConnectionManager.m */; };
 		1511961A18E9676A00BC13E2 /* CircularButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 1511961918E9676A00BC13E2 /* CircularButton.m */; };
 		1511961C18E968FF00BC13E2 /* brush.png in Resources */ = {isa = PBXBuildFile; fileRef = 1511961B18E968FF00BC13E2 /* brush.png */; };
@@ -66,6 +70,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		15054536191F70D100BC3905 /* TOActivityChrome.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TOActivityChrome.h; sourceTree = "<group>"; };
+		15054537191F70D100BC3905 /* TOActivityChrome.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TOActivityChrome.m; sourceTree = "<group>"; };
+		15054538191F70D100BC3905 /* TOActivitySafari.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TOActivitySafari.h; sourceTree = "<group>"; };
+		15054539191F70D100BC3905 /* TOActivitySafari.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TOActivitySafari.m; sourceTree = "<group>"; };
+		1505453A191F70D100BC3905 /* TOWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TOWebViewController.h; sourceTree = "<group>"; };
+		1505453B191F70D100BC3905 /* TOWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TOWebViewController.m; sourceTree = "<group>"; };
+		1505453C191F70D100BC3905 /* UIImage+TOWebViewControllerIcons.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+TOWebViewControllerIcons.h"; sourceTree = "<group>"; };
+		1505453D191F70D100BC3905 /* UIImage+TOWebViewControllerIcons.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+TOWebViewControllerIcons.m"; sourceTree = "<group>"; };
 		1511961218E94EB500BC13E2 /* ConnectionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConnectionManager.h; sourceTree = "<group>"; };
 		1511961318E94EB500BC13E2 /* ConnectionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConnectionManager.m; sourceTree = "<group>"; };
 		1511961818E9676A00BC13E2 /* CircularButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CircularButton.h; sourceTree = "<group>"; };
@@ -165,6 +177,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		15054535191F70A600BC3905 /* WebView */ = {
+			isa = PBXGroup;
+			children = (
+				15054536191F70D100BC3905 /* TOActivityChrome.h */,
+				15054537191F70D100BC3905 /* TOActivityChrome.m */,
+				15054538191F70D100BC3905 /* TOActivitySafari.h */,
+				15054539191F70D100BC3905 /* TOActivitySafari.m */,
+				1505453A191F70D100BC3905 /* TOWebViewController.h */,
+				1505453B191F70D100BC3905 /* TOWebViewController.m */,
+				1505453C191F70D100BC3905 /* UIImage+TOWebViewControllerIcons.h */,
+				1505453D191F70D100BC3905 /* UIImage+TOWebViewControllerIcons.m */,
+			);
+			name = WebView;
+			sourceTree = "<group>";
+		};
 		1511962A18E9C45C00BC13E2 /* Images */ = {
 			isa = PBXGroup;
 			children = (
@@ -273,6 +300,7 @@
 		15CFC91C180D39AD00888F11 /* iPod+Kinect */ = {
 			isa = PBXGroup;
 			children = (
+				15054535191F70A600BC3905 /* WebView */,
 				1532BD8C18A3F7A000990F48 /* AKTextField.h */,
 				1532BD8D18A3F7A000990F48 /* AKTextField.m */,
 				157BF20B18D45975002C848D /* Apparel */,
@@ -446,6 +474,7 @@
 				157BF20618D4596D002C848D /* REPagedScrollView.m in Sources */,
 				1532BD2D18A2421400990F48 /* ESCHueWheel.m in Sources */,
 				15CFC92D180D39AD00888F11 /* NetworkViewController.m in Sources */,
+				1505453E191F70D100BC3905 /* TOActivityChrome.m in Sources */,
 				1511961418E94EB500BC13E2 /* ConnectionManager.m in Sources */,
 				157BF20918D4596D002C848D /* UIColor+FlatUI.m in Sources */,
 				1532BD3418A2423A00990F48 /* ESCColorPickerView.m in Sources */,
@@ -461,10 +490,13 @@
 				157BF20A18D4596D002C848D /* UIImage+FlatUI.m in Sources */,
 				1532BD4818A2435800990F48 /* ESCObserversProxy.m in Sources */,
 				1532BD2E18A2421400990F48 /* ESCColorControlThumb.m in Sources */,
+				1505453F191F70D100BC3905 /* TOActivitySafari.m in Sources */,
 				15CFC923180D39AD00888F11 /* main.m in Sources */,
+				15054540191F70D100BC3905 /* TOWebViewController.m in Sources */,
 				157BF20818D4596D002C848D /* TTCardViewController.m in Sources */,
 				1511962118E9825400BC13E2 /* DesignChooserViewController.m in Sources */,
 				1532BD3518A2423A00990F48 /* ESCColorPickerPresenter.m in Sources */,
+				15054541191F70D100BC3905 /* UIImage+TOWebViewControllerIcons.m in Sources */,
 				1532BD5018A2447200990F48 /* FYPPaletteViewController.m in Sources */,
 				157BF20518D4596D002C848D /* FUIButton.m in Sources */,
 			);

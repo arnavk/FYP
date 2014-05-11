@@ -8,6 +8,7 @@
 
 #import "DesignChooserViewController.h"
 #import "ConnectionManager.h"
+#import "TOWebViewController.h"
 
 @interface DesignChooserViewController ()
 
@@ -29,9 +30,15 @@
     [self addCardViewWithID:[NSNumber numberWithInt:2] Image:[UIImage imageNamed:@"d2.png"] ButtonTitle:@"Choose"];
     [self addCardViewWithID:[NSNumber numberWithInt:3] Image:[UIImage imageNamed:@"d3.png"] ButtonTitle:@"Choose"];
     [self addCardViewWithID:[NSNumber numberWithInt:4] Image:[UIImage imageNamed:@"d4.png"] ButtonTitle:@"Choose"];
+    
+    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"Browse"
+                                                                    style:UIBarButtonItemStyleDone
+                                                                   target:self
+                                                                   action:@selector(showWebView) ];
+    self.navigationItem.rightBarButtonItem = rightButton;
 }
 
-- (void)didReceiveMemoryWarning
+- (void) didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
 }
@@ -45,6 +52,15 @@
 - (void) viewDidDisappear:(BOOL)animated
 {
     [[ConnectionManager sharedManager] sendMessage:[NSString stringWithFormat:@"/clear_design/"]];
+}
+
+- (void) showWebView
+{
+    NSURL *url = [NSURL URLWithString:@"https://www.google.com.sg/webhp?hl=en&tbm=isch&tab=wi"];
+    TOWebViewController *webViewController = [[TOWebViewController alloc] initWithURL:url];
+    self.navigationController.navigationBar.barTintColor = [UIColor blackColor];
+    [self presentViewController:[[UINavigationController alloc] initWithRootViewController:webViewController] animated:YES completion:nil];
+    
 }
 
 @end
