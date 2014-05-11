@@ -189,6 +189,7 @@
     <Resource Include="d2.png" />
     <Resource Include="d3.png" />
     <Resource Include="d4.png" />
+    <Resource Include="FYP Title.png" />
     <Content Include="nppc64_55.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

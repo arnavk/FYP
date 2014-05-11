@@ -116,19 +116,13 @@ namespace SkeletalTracking
                     grid[i, j].Visibility = Visibility.Hidden;
                 }
             }
-            //for (i = 0; i < 50; i++)
-            //{
-            //    grid[i] = new System.Windows.Shapes.Rectangle
-            //    {
-            //        Fill = System.Windows.Media.Brushes.Blue,
-            //        Width = MainCanvas.ActualWidth / 10,
-            //        Height = MainCanvas.ActualHeight / 10,
-            //    };
-            //    MainCanvas.Children.Add(grid[i]);
-            //    Canvas.SetLeft(grid[i], (((i * 20) + ((1 - (i / 5) % 2) * 10)) % 100) * MainCanvas.ActualWidth / 100);
-            //    Canvas.SetTop(grid[i], ((int)(i / 5) * 10 * MainCanvas.ActualHeight / 100));
-            //    grid[i].Visibility = Visibility.Hidden;
-            //}
+
+
+            startButton.Visibility = Visibility.Hidden;
+            kinectColorViewer1.Visibility = Visibility.Hidden;
+            LiftUpButton.Visibility = Visibility.Hidden;
+            LiftDownButton.Visibility = Visibility.Hidden;
+            //elevationAngleSlider.Visibility = Visibility.Hidden;
 
             rightEllipse.Visibility = Visibility.Hidden;
             leftEllipse.Visibility = Visibility.Hidden;
@@ -292,7 +286,7 @@ namespace SkeletalTracking
             try
             {
                 sensor.Start();
-                sensor.ElevationAngle = 5;
+                sensor.ElevationAngle = 5;  
             }
             catch (System.IO.IOException)
             {
@@ -315,6 +309,14 @@ namespace SkeletalTracking
                 calibrate(e);
                 return;
             }
+            else if (!calibrating && !calibrationComplete && frames < 150)
+            {
+                frames ++;
+            }
+            else if (!calibrating && !calibrationComplete && frames >= 150)
+            {
+                setupApplication();
+            }
 
             udpateApplicationState();
 
@@ -336,6 +338,16 @@ namespace SkeletalTracking
 
             GetCameraPoint(first, e); 
 
+        }
+
+        private void setupApplication()
+        {
+            startButton.Visibility = Visibility.Visible;
+            kinectColorViewer1.Visibility = Visibility.Visible;
+            Introduction.Visibility = Visibility.Hidden;
+            //elevationAngleSlider.Visibility = Visibility.Visible;
+            LiftUpButton.Visibility = Visibility.Visible;
+            LiftDownButton.Visibility = Visibility.Visible;
         }
 
         private bool countFrames(int count)
@@ -419,9 +431,21 @@ namespace SkeletalTracking
                 calculateMappingMatrix();
                 calibrating = false;
                 calibrationComplete = true;
-
+                showBorder();
             }
 
+        }
+
+        private void showBorder()
+        {
+            for (int i = 0; i < gridSize; i++)
+            {
+                for (int j = 0; j < gridSize; j++)
+                {
+                    if (i == 0 || j == 0 || i == gridSize - 1 || j == gridSize - 1)
+                        grid[i, j].Visibility = Visibility.Visible;
+                }
+            }
         }
 
         private void updateGridVisibility(Visibility visibility)
@@ -936,6 +960,9 @@ namespace SkeletalTracking
         private void MouseDoubleClickOccured(object sender, MouseButtonEventArgs e)
         {
             startButton.Visibility = Visibility.Hidden;
+            LiftUpButton.Visibility = Visibility.Hidden;
+            LiftDownButton.Visibility = Visibility.Hidden;
+            //elevationAngleSlider.Visibility = Visibility.Hidden;
             
             //rectangle.Height = MainCanvas.ActualHeight / 10;
             //rectangle.Width = MainCanvas.ActualWidth / 10;
@@ -945,6 +972,7 @@ namespace SkeletalTracking
             kinectColorViewer1.Visibility = Visibility.Hidden;
             calibrating = true;
             calibrationComplete = false;
+            frames = 0;
             
         }
 
@@ -1043,6 +1071,30 @@ namespace SkeletalTracking
             Canvas.SetTop(designImage, Canvas.GetTop(clothImage) + clothImage.Height / 2 - designImage.Height / 2);
             Canvas.SetLeft(designImage, Canvas.GetLeft(clothImage) + clothImage.Width / 2 - designImage.Width/ 2);
 
+        }
+
+        private void angleChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            var slider = sender as Slider;
+            KinectSensor sensor = kinectSensorChooser1.Kinect;
+            if (sensor != null)
+                sensor.ElevationAngle = (int)slider.Value;
+        }
+
+        private void TiltUp(object sender, MouseButtonEventArgs e)
+        {
+            var slider = sender as Slider;
+            KinectSensor sensor = kinectSensorChooser1.Kinect;
+            if (sensor != null && sensor.ElevationAngle != 27)
+                sensor.ElevationAngle = sensor.ElevationAngle + 1;
+        }
+
+        private void TiltDown(object sender, MouseButtonEventArgs e)
+        {
+            var slider = sender as Slider;
+            KinectSensor sensor = kinectSensorChooser1.Kinect;
+            if (sensor != null && sensor.ElevationAngle != -27)
+                sensor.ElevationAngle = sensor.ElevationAngle - 1;
         }
     }
 }
